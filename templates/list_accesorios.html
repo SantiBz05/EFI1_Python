@@ -1,0 +1,27 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingresa un nuevo Accesorio</h4>
+            <form action="" method="post">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Accesorio">
+                <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion del Accesorio">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Accesorios</h4>
+            {% for accesorio in accesorios %}
+            <li>
+                <a href="/accesorio/{{accesorio.id}}/equipos"> {{accesorio.nombre}} - {{accesorio.descripcion}} </a>
+            </li>
+            {% endfor %}
+        </div>
+    
+    </div>
+</div>
+    
+{% endblock %}

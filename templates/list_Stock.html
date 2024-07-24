@@ -1,0 +1,27 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingresar/Actualizar Stock</h4>
+            <form action="" method="post">
+                <input type="text" name="cantDisp" class="form-control mb-2" placeholder="Cantidad Disponible">
+                <input type="text" name="ubiAlm" class="form-control mb-2" placeholder="Ubicacion en el Almacen">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Stock</h4>
+            {% for stock in añadirStock %}
+            <li>
+                <a href="/stock/{{stock.id}}/equipos">{{ stock.cantidadDisponible }} - {{ stock.ubicacionAlmacen }}</a>
+            </li>
+            {% endfor %}
+        </div>
+    
+    </div>
+</div>
+    
+{% endblock %}

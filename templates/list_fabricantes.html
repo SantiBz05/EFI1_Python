@@ -1,0 +1,27 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Inserta un nuevo Fabricante</h4>
+            <form action="" method="post">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Fabricante">
+                <input type="text" name="origen" class="form-control mb-2" placeholder="Origen del Fabricante">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Fabricantes</h4>
+            {% for fabricante in fabricantes %}
+            <li>
+                <a href="/list_fabricantes/{{fabricante.id}}/equipos"> {{fabricante.nombre}} - {{fabricante.origen}} </a>
+            </li>
+            {% endfor %}
+        </div>
+    
+    </div>
+</div>
+    
+{% endblock %}
