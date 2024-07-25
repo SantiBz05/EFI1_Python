@@ -96,20 +96,23 @@ def modelos():
 @app.route("/list_accesorios", methods=['POST', 'GET'])
 def accesorios():
     accesorios = Accesorios.query.all()
+    stocks = Stock.query.all()
 
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
+        stock = request.form['stock']
         
         nuevoAccesorio = Accesorios(
             nombre=nombre,
-            descripcion=descripcion
+            descripcion=descripcion,
+            stock_id=stock
         )
         db.session.add(nuevoAccesorio)
         db.session.commit()
         return redirect(url_for('accesorios'))
 
-    return render_template('list_accesorios.html', accesorios=accesorios)
+    return render_template('list_accesorios.html', accesorios=accesorios, stocks=stocks)
 
 @app.route("/list_proveedores", methods=['POST', 'GET'])
 def proveedores():
@@ -162,3 +165,45 @@ def añadirCaracteristica():
         return redirect(url_for('añadirCaracteristica'))  
 
     return render_template('list_caracteristicas.html', añadirCaracteristica=añadirCaracteristica)
+
+@app.route("/list_equipos", methods = ['POST', 'GET'])
+def equipos():
+    equipos = Equipo.query.all()
+    modelos = Modelo.query.all()
+    marcas = Marca.query.all()
+    caracteristicas = Caracteristicas.query.all()
+    proveedores = Proveedor.query.all()
+    stocks = Stock.query.all()
+    categorias = Categoria.query.all()
+    
+    if request.method == 'POST':
+        modelo = request.form['modelo']
+        marca = request.form['marca']
+        categoria = request.form['categoria']
+        precio = request.form['precio']
+        caracteristicas = request.form['caracteristicas']
+        proveedor = request.form['proveedor']
+        stock = request.form['stock']
+        nuevoEquipo = Equipo(
+            modelo_id=modelo, 
+            marca_id=marca,
+            categoria_id=categoria,
+            precio=precio,
+            caracteristicas_id=caracteristicas,
+            proveedor_id=proveedor,
+            stock_id=stock,
+        )
+        db.session.add(nuevoEquipo)
+        db.session.commit()
+        return redirect(url_for('equipos'))
+
+    return render_template(
+        'list_equipos.html',
+        modelos=modelos,
+        marcas=marcas,
+        caracteristicas=caracteristicas,
+        proveedores=proveedores,
+        stocks=stocks,
+        categorias=categorias,
+        equipos=equipos,
+    )

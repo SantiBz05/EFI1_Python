@@ -28,15 +28,18 @@ class Stock(db.Model):
     ubicacionAlmacen = db.Column(db.String(10), nullable=False)
 
     def __str__(self) -> str:
-        return self.cantidadDisponible
-    
+        return str(self.cantidadDisponible)
+
 class Accesorios(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(1000), nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
+    stock = db.relationship('Stock', backref=db.backref('accesorios', lazy=True))
 
     def __str__(self) -> str:
         return self.nombre
+
     
 class Caracteristicas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,7 +75,6 @@ class Modelo(db.Model):
 
 class Equipo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(50), nullable=False)
     categoria = db.Column(db.String(50), nullable=False)
     precio = db.Column(db.Integer)
 
@@ -81,12 +83,12 @@ class Equipo(db.Model):
     caracteristicas_id = db.Column(db.Integer, db.ForeignKey('caracteristicas.id'), nullable=False)
     proveedor_id = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
-    accesorios_id = db.Column(db.Integer, db.ForeignKey('accesorios.id'), nullable=False)
+    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
 
     modelo = db.relationship('Modelo', backref=db.backref('equipos', lazy=True))
     marca = db.relationship('Marca', backref=db.backref('equipos', lazy=True))
     caracteristicas = db.relationship('Caracteristicas', backref=db.backref('equipos', lazy=True))
     proveedor = db.relationship('Proveedor', backref=db.backref('equipos', lazy=True))
     stock = db.relationship('Stock', backref=db.backref('equipos', lazy=True))
-    accesorios = db.relationship('Accesorios', backref=db.backref('equipos', lazy=True))
+    categoria = db.relationship('Categoria', backref=db.backref('equipos', lazy=True))
 
