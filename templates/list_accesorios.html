@@ -8,11 +8,7 @@
             <form action="" method="post">
                 <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Accesorio">
                 <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion del Accesorio">
-                <select name="stock" id="" class="form-control mb-2">
-                    {% for stock in stocks %}
-                        <option value="{{ stock.id }}">{{ stock.cantidadDisponible }}</option>
-                    {% endfor %}
-                </select>
+
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -22,7 +18,7 @@
                 {% for accesorio in accesorios %}
                     <li>
                         <a href="/accesorio/{{ accesorio.id }}/equipos">
-                            {{ accesorio.nombre }} - {{ accesorio.descripcion }} - {{ accesorio.stock }}
+                            {{ accesorio.nombre }} - {{ accesorio.descripcion }} 
                         </a>
                     </li>
                 {% endfor %}

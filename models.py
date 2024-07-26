@@ -7,6 +7,7 @@ class Marca(db.Model):
     def __str__(self) -> str:
         return self.nombre
     
+
 class Categoria(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
@@ -14,6 +15,7 @@ class Categoria(db.Model):
     def __str__(self) -> str:
         return self.nombre
     
+
 class Proveedor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
@@ -22,20 +24,29 @@ class Proveedor(db.Model):
     def __str__(self) -> str:
         return self.nombre
     
-class Stock(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    cantidadDisponible = db.Column(db.Integer, nullable=False)
-    ubicacionAlmacen = db.Column(db.String(10), nullable=False)
 
-    def __str__(self) -> str:
-        return str(self.cantidadDisponible)
+# models.py
+class Inventario(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tipo = db.Column(db.String(10), nullable=False)
+    producto_id = db.Column(db.Integer, nullable=False)
+    cantidadDisponible = db.Column(db.Integer, nullable=False)
+    ubicacionAlmacen = db.Column(db.String(50), nullable=False)
+
+    @property
+    def productoNombre(self):
+        if self.tipo == 'equipo':
+            producto = Equipo.query.get(self.producto_id)
+            return producto.nombre_completo if producto else 'Producto no encontrado'
+        elif self.tipo == 'accesorio':
+            producto = Accesorios.query.get(self.producto_id)
+            return producto.nombre if producto else 'Producto no encontrado'
+
 
 class Accesorios(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(1000), nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
-    stock = db.relationship('Stock', backref=db.backref('accesorios', lazy=True))
 
     def __str__(self) -> str:
         return self.nombre
@@ -48,9 +59,8 @@ class Caracteristicas(db.Model):
 
     def __str__(self) -> str:
         return self.nombre
+  
 
-
-    
 class Fabricante(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
@@ -59,6 +69,7 @@ class Fabricante(db.Model):
     def __str__(self) -> str:
         return self.nombre    
     
+
 class Modelo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     modelo = db.Column(db.String(50), nullable=False)
@@ -75,20 +86,20 @@ class Modelo(db.Model):
 
 class Equipo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    categoria = db.Column(db.String(50), nullable=False)
     precio = db.Column(db.Integer)
 
     modelo_id = db.Column(db.Integer, db.ForeignKey('modelo.id'), nullable=False)
     marca_id = db.Column(db.Integer, db.ForeignKey('marca.id'), nullable=False)  
     caracteristicas_id = db.Column(db.Integer, db.ForeignKey('caracteristicas.id'), nullable=False)
     proveedor_id = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
     categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
 
     modelo = db.relationship('Modelo', backref=db.backref('equipos', lazy=True))
     marca = db.relationship('Marca', backref=db.backref('equipos', lazy=True))
     caracteristicas = db.relationship('Caracteristicas', backref=db.backref('equipos', lazy=True))
     proveedor = db.relationship('Proveedor', backref=db.backref('equipos', lazy=True))
-    stock = db.relationship('Stock', backref=db.backref('equipos', lazy=True))
     categoria = db.relationship('Categoria', backref=db.backref('equipos', lazy=True))
 
+    @property
+    def nombre_completo(self):
+        return f"{self.marca.nombre} {self.modelo.modelo}"

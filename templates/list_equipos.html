@@ -1,7 +1,12 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container ">
+    <div class="row">
+        <div class="col">
+            {% include 'nav_equipos.html' %}
+        </div>
+    </div>
     <div class="row">
 
         <div class="col-4">
@@ -36,11 +41,7 @@
                         <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
                     {% endfor %}
                 </select>
-                <select name="stock" id="" class="form-control mb-2">
-                    {% for stock in stocks %}
-                        <option value="{{stock.id}}">{{stock.cantidadDisponible}}</option>
-                    {% endfor %}
-                </select>
+
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -49,7 +50,7 @@
             <h4>Listado de Equipos</h4>
             {% for equipo in equipos %}
                 <li>
-                    {{ equipo.modelo.modelo }} - {{ equipo.marca.nombre }} - {{ equipo.categoria.nombre}} - {{ equipo.precio }} - {{ equipo.caracteristicas.nombre }} - {{ equipo.caracteristicas.descripcion }} - {{ equipo.proveedor.nombre }} - {{ equipo.stock.cantidadDisponible }}
+                    {{ equipo.modelo.modelo }} - {{ equipo.marca.nombre }} - {{ equipo.categoria.nombre}} - {{ equipo.precio }} - {{ equipo.caracteristicas.nombre }} - {{ equipo.caracteristicas.descripcion }} - {{ equipo.proveedor.nombre }} 
                 </li>
         {% endfor %}
         

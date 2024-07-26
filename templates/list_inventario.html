@@ -1,0 +1,62 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% include 'nav_equipos.html' %}
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-4">
+                <h4>Ingresar nuevo registro al Inventario </h4>
+                <form action="" method="post">
+                    <select name="tipo" id="tipoProducto" class="form-control mb-2">
+                        <option value="equipo">Equipo</option>
+                        <option value="accesorio">Accesorio</option>
+                    </select>
+                    <select name="producto" id="producto" class="form-control mb-2">
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const tipoProductoSelect = document.getElementById('tipoProducto');
+                                const productoSelect = document.getElementById('producto');
+                            
+                                tipoProductoSelect.addEventListener('change', function() {
+                                    const tipo = tipoProductoSelect.value;
+                                    fetch(`/get_productos/${tipo}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            productoSelect.innerHTML = ''; // Limpiar el select de productos
+                                            data.forEach(producto => {
+                                                const option = document.createElement('option');
+                                                option.value = producto.id;
+                                                option.textContent = producto.nombre;
+                                                productoSelect.appendChild(option);
+                                            });
+                                        })
+                                        .catch(error => console.error('Error fetching productos:', error));
+                                });
+                            
+                                // Trigger change event on page load to populate the initial product list
+                                tipoProductoSelect.dispatchEvent(new Event('change'));
+                            });
+                            </script>
+                    </select>
+                    <input type="text" name="cantidadDisponible" class="form-control mb-2" placeholder="Cantidad Disponible">
+                    <input type="text" name="ubicacionAlmacen" class="form-control mb-2" placeholder="Ubicacion en Almacen">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+            </div>            
+        <div class="col-8">
+            <h4>Listado del Inventario</h4>
+            {% for inventario in inventarios %}
+            <li>
+                <a href="/inventario/{{inventario.id}}/equipos">{{ inventario.productoNombre }} - {{ inventario.tipo }} - {{ inventario.cantidadDisponible }} - {{ inventario.ubicacionAlmacen }}</a>
+            </li>
+            {% endfor %}
+        </div>
+        
+    </div>   
+</div>
+    
+{% endblock %}

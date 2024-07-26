@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from models import Marca, Categoria, Proveedor, Stock, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo 
+from models import Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo 
 
 @app.route("/")
 def index():
@@ -96,23 +96,20 @@ def modelos():
 @app.route("/list_accesorios", methods=['POST', 'GET'])
 def accesorios():
     accesorios = Accesorios.query.all()
-    stocks = Stock.query.all()
 
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
-        stock = request.form['stock']
         
         nuevoAccesorio = Accesorios(
             nombre=nombre,
             descripcion=descripcion,
-            stock_id=stock
         )
         db.session.add(nuevoAccesorio)
         db.session.commit()
         return redirect(url_for('accesorios'))
 
-    return render_template('list_accesorios.html', accesorios=accesorios, stocks=stocks)
+    return render_template('list_accesorios.html', accesorios=accesorios)
 
 @app.route("/list_proveedores", methods=['POST', 'GET'])
 def proveedores():
@@ -131,22 +128,41 @@ def proveedores():
 
     return render_template('list_proveedores.html', proveedores=proveedores)
 
-@app.route("/list_Stock", methods=['POST', 'GET'])
-def añadirStock():
-    añadirStock = Stock.query.all()
+@app.route("/list_inventario", methods=['POST', 'GET'])
+def inventarios():
+    inventarios = Inventario.query.all()
 
     if request.method == 'POST':
-        cantDisp = request.form['cantDisp']
-        uniAlm = request.form['ubiAlm']
-        nuevoStock = Stock(
-            cantidadDisponible=cantDisp,
-            ubicacionAlmacen=uniAlm
-        )
-        db.session.add(nuevoStock)
-        db.session.commit()
-        return redirect(url_for('añadirStock'))
+        tipo = request.form['tipo']
+        producto_id = request.form['producto']
+        cantidadDisponible = request.form['cantidadDisponible']
+        ubicacionAlmacen = request.form['ubicacionAlmacen']
 
-    return render_template('list_Stock.html', añadirStock=añadirStock)
+        nuevoInventario = Inventario(
+            tipo=tipo,
+            producto_id=producto_id,
+            cantidadDisponible=cantidadDisponible,
+            ubicacionAlmacen=ubicacionAlmacen,
+        )
+        db.session.add(nuevoInventario)
+        db.session.commit()
+        return redirect(url_for('inventarios'))
+
+    return render_template('list_inventario.html', inventarios=inventarios)
+
+
+@app.route('/get_productos/<tipo>', methods=['GET'])
+def get_productos(tipo):
+    if tipo == 'equipo':
+        productos = Equipo.query.all()
+        productos_dict = [{"id": producto.id, "nombre": producto.nombre_completo} for producto in productos]
+    elif tipo == 'accesorio':
+        productos = Accesorios.query.all()
+        productos_dict = [{"id": producto.id, "nombre": producto.nombre} for producto in productos]
+    else:
+        productos_dict = []
+
+    return jsonify(productos_dict)
 
 @app.route("/list_caracteristicas", methods=['POST', 'GET'])
 def añadirCaracteristica():
@@ -173,7 +189,6 @@ def equipos():
     marcas = Marca.query.all()
     caracteristicas = Caracteristicas.query.all()
     proveedores = Proveedor.query.all()
-    stocks = Stock.query.all()
     categorias = Categoria.query.all()
     
     if request.method == 'POST':
@@ -183,7 +198,6 @@ def equipos():
         precio = request.form['precio']
         caracteristicas = request.form['caracteristicas']
         proveedor = request.form['proveedor']
-        stock = request.form['stock']
         nuevoEquipo = Equipo(
             modelo_id=modelo, 
             marca_id=marca,
@@ -191,7 +205,6 @@ def equipos():
             precio=precio,
             caracteristicas_id=caracteristicas,
             proveedor_id=proveedor,
-            stock_id=stock,
         )
         db.session.add(nuevoEquipo)
         db.session.commit()
@@ -203,7 +216,6 @@ def equipos():
         marcas=marcas,
         caracteristicas=caracteristicas,
         proveedores=proveedores,
-        stocks=stocks,
         categorias=categorias,
         equipos=equipos,
     )
