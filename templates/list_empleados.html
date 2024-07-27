@@ -1,0 +1,45 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingrese un Nuevo Empleado</h4>
+            <form action="" method="post">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Empleado">
+                <label for="puesto">Puesto</label>
+                <input type="text" name="puesto" class="form-control mb-2" placeholder="Puesto del Empleado">
+                <label for="Sucursal">Sucursal</label>
+                <select name="sucursal" id="" class="form-control mb-2">
+                    {% for sucursal in sucursales %}
+                        <option value="{{sucursal.id}}">{{sucursal.nombre}}</option>
+                    {% endfor %}
+                </select>                
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Empleados</h4>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Puesto</th>
+                        <th>Sucursal</th>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                    <tr>
+                        <td>{{ empleado.nombre }} </td>
+                        <td>{{ empleado.puesto }} </td>
+                        <td>{{ empleado.sucursal.nombre }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+    
+{% endblock %}

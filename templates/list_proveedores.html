@@ -7,18 +7,30 @@
         <div class="col-4">
             <h4>Ingresa un nuevo Proveedor</h4>
             <form action="" method="post">
+                <label for="nombre">Nombre</label>
                 <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Proveedor">
+                <label for="contacto">Contacto</label>
                 <input type="text" name="contacto" class="form-control mb-2" placeholder="Contacto del Proveedor">
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
         <div class="col-8">
             <h4>Listado de Proveedores</h4>
-            {% for proveedor in proveedores %}
-            <li>
-                <a href="/proveedor/{{proveedor.id}}/equipos"> {{proveedor.nombre}} - {{proveedor.contacto}} </a>
-            </li>
-            {% endfor %}
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>contacto</th>
+                </thead>
+                <tbody>
+                    {% for proveedor in proveedores %}
+                    <tr>
+                        <td>{{ proveedor.nombre }} </td>
+                        <td>{{ proveedor.contacto }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     
     </div>

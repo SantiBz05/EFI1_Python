@@ -1,0 +1,65 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <h4>Ingresar nuevo registro de Ventas </h4>
+            <form action="" method="post">
+                <label for="cliente">Cliente</label>
+                <select name="cliente" id="cliente" class="form-control mb-2">
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <label for="producto">Producto</label>
+                <select name="producto" id="producto" class="form-control mb-2">
+                    {% for producto in equipos %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                    {% endfor %}
+                    {% for producto in accesorios %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <label for="tipo">Tipo</label>
+                <select name="tipo" id="tipo" class="form-control mb-2">
+                    <option value="equipo">Equipo</option>
+                    <option value="accesorio">Accesorio</option>
+                </select>
+                <label for="cantidad">Cantidad</label>
+                <input type="text" name="cantidad" class="form-control mb-2" placeholder="Cantidad de Venta">
+                <label for="fecha">Fecha de Venta</label>
+                <input type="text" name="fecha" class="form-control mb-2" placeholder="Fecha de Venta">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado del Inventario</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venta in ventas %}
+                    <tr>
+                        <td>{{ venta.cliente.nombre }}</td>
+                        <td>{{ venta.producto }}</td>
+                        <td>{{ venta.tipo }}</td>
+                        <td>{{ venta.cantidad }}</td>
+                        <td>{{ venta.fecha }}</td>
+                        <td>{{ venta.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingrese un Nuevo Pedido</h4>
+            <form action="" method="post">
+                <label for="proveedor">Proveedor</label>
+                <select name="proveedor" id="" class="form-control mb-2">
+                    {% for proveedor in proveedores %}
+                        <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
+                    {% endfor %}
+                </select>
+                <label for="fecha">fecha</label>
+                <input type="text" name="fecha" class="form-control mb-2" placeholder="Fecha del Pedido">
+                <label for="total">Total</label>
+                <input type="text" name="total" class="form-control mb-2" placeholder="Total del Pedido">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Pedidos</h4>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.proveedor }} </td>
+                        <td>{{ pedido.fecha }} </td>
+                        <td>{{ pedido.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+    
+{% endblock %}

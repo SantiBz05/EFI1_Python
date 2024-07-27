@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingrese una Nueva Sucursal</h4>
+            <form action="" method="post">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre de la Sucursal">
+                <label for="direccion">Direccion</label>
+                <input type="text" name="direccion" class="form-control mb-2" placeholder="Direccion de la Sucursal">
+                <label for="telefono">Telefono</label>
+                <input type="text" name="telefono" class="form-control mb-2" placeholder="Telefono de la Sucursal">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Sucursales</h4>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                </thead>
+                <tbody>
+                    {% for sucursal in sucursales %}
+                    <tr>
+                        <td>{{ sucursal.nombre }} </td>
+                        <td>{{ sucursal.direccion }} </td>
+                        <td>{{ sucursal.telefono }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+    
+{% endblock %}

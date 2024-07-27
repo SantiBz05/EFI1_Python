@@ -3,13 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/tienda_celulares_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/tienda_celulares'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from models import Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo 
+from models import Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo, Pedido, Cliente, Empleado, Sucursal, Venta
 
 @app.route("/")
 def index():
@@ -18,17 +18,24 @@ def index():
 @app.route("/list_marca", methods=['POST', 'GET'])
 def marcas():
     marcas = Marca.query.all()
+    fabricantes = Fabricante.query.all()
 
     if request.method == 'POST':
         nombre = request.form['nombre']
+        fabricante = request.form['fabricante']
         nueva_marca = Marca(
             nombre=nombre,
+            fabricante_id=fabricante,
         )
         db.session.add(nueva_marca)
         db.session.commit()
         return redirect(url_for('marcas'))
 
-    return render_template('list_marca.html', marcas=marcas)
+    return render_template(
+        'list_marca.html', 
+        marcas=marcas,
+        fabricantes=fabricantes,
+        )
 
 @app.route("/list_categorias", methods=['POST', 'GET'])
 def categorias():
@@ -66,21 +73,18 @@ def fabricantes():
 @app.route("/list_modelos", methods = ['POST', 'GET'])
 def modelos():
     modelos = Modelo.query.all()
-    fabricantes = Fabricante.query.all()
     categorias = Categoria.query.all()
     
     if request.method == 'POST':
         modelo = request.form['modelo']
         anio = request.form['anioLanzamiento']
         sistOp = request.form['sistemaOperativo']
-        fabricante = request.form['fabricante']
         categoria = request.form['categoria']
         nuevoModelo = Modelo(
             modelo=modelo,
             anioLanzamiento=anio,
             sistemaOperativo=sistOp,
-            fabricante_id=fabricante,
-            categoria_id=categoria
+            categoria_id=categoria,
         )
         db.session.add(nuevoModelo)
         db.session.commit()
@@ -89,7 +93,6 @@ def modelos():
     return render_template(
         'list_modelos.html',
         modelos=modelos,
-        fabricantes=fabricantes,
         categorias=categorias,
     )
 
@@ -100,10 +103,11 @@ def accesorios():
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
-        
+        precio = request.form['precio']
         nuevoAccesorio = Accesorios(
             nombre=nombre,
             descripcion=descripcion,
+            precio=precio,
         )
         db.session.add(nuevoAccesorio)
         db.session.commit()
@@ -131,16 +135,18 @@ def proveedores():
 @app.route("/list_inventario", methods=['POST', 'GET'])
 def inventarios():
     inventarios = Inventario.query.all()
+    equipos = Equipo.query.all()
+    accesorios = Accesorios.query.all()
 
     if request.method == 'POST':
         tipo = request.form['tipo']
-        producto_id = request.form['producto']
+        producto = request.form['producto']
         cantidadDisponible = request.form['cantidadDisponible']
         ubicacionAlmacen = request.form['ubicacionAlmacen']
 
         nuevoInventario = Inventario(
             tipo=tipo,
-            producto_id=producto_id,
+            producto=producto, 
             cantidadDisponible=cantidadDisponible,
             ubicacionAlmacen=ubicacionAlmacen,
         )
@@ -148,21 +154,12 @@ def inventarios():
         db.session.commit()
         return redirect(url_for('inventarios'))
 
-    return render_template('list_inventario.html', inventarios=inventarios)
-
-
-@app.route('/get_productos/<tipo>', methods=['GET'])
-def get_productos(tipo):
-    if tipo == 'equipo':
-        productos = Equipo.query.all()
-        productos_dict = [{"id": producto.id, "nombre": producto.nombre_completo} for producto in productos]
-    elif tipo == 'accesorio':
-        productos = Accesorios.query.all()
-        productos_dict = [{"id": producto.id, "nombre": producto.nombre} for producto in productos]
-    else:
-        productos_dict = []
-
-    return jsonify(productos_dict)
+    return render_template(
+        'list_inventario.html', 
+        inventarios=inventarios,
+        equipos=equipos,
+        accesorios=accesorios,
+    )
 
 @app.route("/list_caracteristicas", methods=['POST', 'GET'])
 def añadirCaracteristica():
@@ -218,4 +215,146 @@ def equipos():
         proveedores=proveedores,
         categorias=categorias,
         equipos=equipos,
+    )
+
+@app.route("/list_pedidos", methods=['POST', 'GET'])
+def pedidos():
+    pedidos = Pedido.query.all()
+    proveedores = Proveedor.query.all()
+
+    if request.method == 'POST':
+        proveedor = request.form['proveedor']
+        fecha = request.form['fecha']
+        total = request.form['total']
+        nuevoPedido = Pedido(
+            proveedor_id=proveedor,
+            fecha=fecha,
+            total=total,
+        )
+        db.session.add(nuevoPedido)
+        db.session.commit()
+        return redirect(url_for('pedidos'))
+
+    return render_template(
+        'list_pedidos.html', 
+        pedidos=pedidos,
+        proveedores=proveedores,   
+    )
+
+
+@app.route("/list_clientes", methods=['POST', 'GET'])
+def clientes():
+    clientes = Cliente.query.all()
+
+    if request.method == 'POST':
+        nombre = request.form['nombre']    
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']
+        email = request.form['email']
+        fechaRegistro = request.form['fechaRegistro']        
+        nuevoCliente = Cliente(
+            nombre=nombre,
+            direccion=direccion,
+            telefono=telefono,
+            email=email,
+            fechaRegistro=fechaRegistro,
+    )
+        db.session.add(nuevoCliente)
+        db.session.commit()
+        return redirect(url_for('clientes'))
+
+    return render_template(
+        'list_clientes.html', 
+        clientes=clientes,
+    )
+
+@app.route("/list_empleados", methods=['POST', 'GET'])
+def empleados():
+    empleados = Empleado.query.all()
+    sucursales = Sucursal.query.all()
+
+    if request.method == 'POST':
+        nombre = request.form['nombre']    
+        puesto = request.form['puesto']
+        sucursal = request.form['sucursal']    
+        nuevoEmpleado = Empleado(
+            nombre=nombre,
+            puesto=puesto,
+            sucursal_id=sucursal,
+    )
+        db.session.add(nuevoEmpleado)
+        db.session.commit()
+        return redirect(url_for('empleados'))
+
+    return render_template(
+        'list_empleados.html', 
+        empleados=empleados,
+        sucursales=sucursales,
+    )
+
+@app.route("/list_sucursales", methods=['POST', 'GET'])
+def sucursales():
+    sucursales = Sucursal.query.all()
+
+    if request.method == 'POST':
+        nombre = request.form['nombre']    
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']    
+        nuevaSucursal = Sucursal(
+            nombre=nombre,
+            direccion=direccion,
+            telefono=telefono,
+    )
+        db.session.add(nuevaSucursal)
+        db.session.commit()
+        return redirect(url_for('sucursales'))
+
+    return render_template(
+        'list_sucursales.html', 
+        sucursales=sucursales,
+    )
+
+@app.route("/list_ventas", methods=['POST', 'GET'])
+def ventas():
+    ventas = Venta.query.all()
+    clientes = Cliente.query.all()
+    equipos = Equipo.query.all()
+    accesorios = Accesorios.query.all()
+
+    if request.method == 'POST':
+        cliente = request.form['cliente']
+        producto_id = int(request.form['producto'])
+        tipo = request.form['tipo']
+        fecha = request.form['fecha']
+        cantidad = int(request.form['cantidad'])
+        
+        # Buscar el producto en las listas correspondientes
+        producto = None
+        if tipo == 'equipo':
+            producto = next((p for p in equipos if p.id == producto_id), None)
+        elif tipo == 'accesorio':
+            producto = next((p for p in accesorios if p.id == producto_id), None)
+
+        if producto:
+            total = producto.precio * cantidad  # Calcular el total
+
+            nuevaVenta = Venta(
+                cliente_id=cliente,
+                fecha=fecha,
+                cantidad=cantidad,
+                total=total,
+                tipo=tipo,
+                producto=producto.nombre,
+            )
+            db.session.add(nuevaVenta)
+            db.session.commit()
+
+        return redirect(url_for('ventas'))
+
+    return render_template(
+        'list_ventas.html',
+        ventas=ventas,
+        clientes=clientes,
+        equipos=equipos,
+        accesorios=accesorios,
     )

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             {% include 'nav_equipos.html' %}
         </div>
     </div>
@@ -12,14 +12,13 @@
         <div class="col-4">
             <h4>Crea un nuevo Modelo</h4>
             <form action="" method="post">
+                <label for="modelo">Modelo</label>
                 <input type="text" name="modelo" class="form-control mb-2" placeholder="Modelo">
+                <label for="anioLanzamiento">Año de Lanzamiento</label>
                 <input type="number" max="2024" min="2000" name="anioLanzamiento" class="form-control mb-2" placeholder="Año de Lanzamiento">
+                <label for="sistemaOperativo">Sistema Operativo</label>
                 <input type="text" name="sistemaOperativo" class="form-control mb-2" placeholder="Sistema Operativo">
-                <select name="fabricante" id="" class="form-control mb-2">
-                    {% for fabricante in fabricantes %}
-                        <option value="{{fabricante.id}}">{{fabricante.nombre}}</option>
-                    {% endfor %}
-                </select>
+                <label for="categoria">Categoria</label>
                 <select name="categoria" id="" class="form-control mb-2">
                     {% for categoria in categorias %}
                         <option value="{{categoria.id}}">{{categoria.nombre}}</option>
@@ -31,11 +30,25 @@
 
         <div class="col-8">
             <h4>Listado de Modelos</h4>
-            {% for modelo in modelos %}
-                <li>{{ modelo.modelo }} - {{ modelo.categoria.nombre}} - {{ modelo.anioLanzamiento }} - {{ modelo.sistemaOperativo }} - {{ modelo.fabricante.nombre }}</li>
-            {% endfor %}
-        </div>
-        
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Categoria</th>
+                        <th>Año Lanzamiento</th>
+                        <th>Sistema Operativo</th>
+                </thead>
+                <tbody>
+                    {% for modelo in modelos %}
+                    <tr>
+                        <td>{{ modelo.modelo }} </td>
+                        <td>{{ modelo.categoria.nombre }} </td>
+                        <td>{{ modelo.anioLanzamiento }}</td>
+                        <td>{{ modelo.sistemaOperativo }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     </div>
 </div>
     

@@ -1,0 +1,49 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <h4>Ingrese un Nuevo Cliente</h4>
+            <form action="" method="post">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Cliente">
+                <label for="direccion">Direccion</label>
+                <input type="text" name="direccion" class="form-control mb-2" placeholder="Direccion del Cliente">
+                <label for="telefono">Telefono</label>
+                <input type="text" name="telefono" class="form-control mb-2" placeholder="Telefono del Cliente">
+                <label for="email">Email</label>
+                <input type="text" name="email" class="form-control mb-2" placeholder="Email del Cliente">           
+                <label for="fechaRegistro">Fecha de Resgistro</label>
+                <input type="text" name="fechaRegistro" class="form-control mb-2" placeholder="Feha de Registro del Cliente">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4>Listado de Clientes</h4>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Email</th>
+                        <th>Fecha de Registro</th>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nombre }} </td>
+                        <td>{{ cliente.direccion }} </td>
+                        <td>{{ cliente.telefono }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.fechaRegistro }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+    
+{% endblock %}

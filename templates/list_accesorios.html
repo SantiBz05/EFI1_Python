@@ -6,23 +6,34 @@
         <div class="col-4">
             <h4>Ingresa un nuevo Accesorio</h4>
             <form action="" method="post">
+                <label for="nombre">Nombre</label>
                 <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Accesorio">
+                <label for="descripcion">Descripcion</label>
                 <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion del Accesorio">
-
+                <label for="precio">Precio</label>
+                <input type="text" name="precio" class="form-control mb-2" placeholder="Precio del Accesorio">
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
         <div class="col-8">
             <h4>Listado de Accesorios</h4>
-            <ul>
-                {% for accesorio in accesorios %}
-                    <li>
-                        <a href="/accesorio/{{ accesorio.id }}/equipos">
-                            {{ accesorio.nombre }} - {{ accesorio.descripcion }} 
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                </thead>
+                <tbody>
+                    {% for accesorio in accesorios %}
+                    <tr>
+                        <td>{{ accesorio.nombre }} </td>
+                        <td>{{ accesorio.descripcion }} </td>
+                        <td>{{ accesorio.precio }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

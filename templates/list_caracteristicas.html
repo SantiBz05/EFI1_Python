@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             {% include 'nav_equipos.html' %}
         </div>
     </div>
@@ -12,22 +12,31 @@
         <div class="col-4">
             <h4>Ingresar Nueva Caracteristica</h4>
             <form action="" method="post">
+                <label for="nombre">Nombre</label>
                 <input type="text" name="nombre" class="form-control mb-2" placeholder="Nueva Caracteristica">
+                <label for="descripcion">Descripcion</label>
                 <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion">
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
         <div class="col-8">
             <h4>Listado de Caracteristicas</h4>
-            <ul>
-                {% for caracteristica in añadirCaracteristica %}
-                <li>
-                    <a href="/caracteristicas/{{ caracteristica.id }}/equipos">{{ caracteristica.nombre }} - {{ caracteristica.descripcion }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+            <table class="table">     
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                </thead>
+                <tbody>
+                    {% for caracteristica in añadirCaracteristica %}
+                    <tr>
+                        <td>{{ caracteristica.nombre }} </td>
+                        <td>{{ caracteristica.descripcion }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        
     </div>
 </div>
     
