@@ -2,7 +2,7 @@
 
 - ```git clone https://github.com/SantiBz05/EFI1_Python.git```
 
-- ```cd segundo_unificado```
+- ```cd EFI1_Python```
 ##### Crear el entorno virtual
 - ```python3 -m venv env```
 ##### Activar el entorno virtual
