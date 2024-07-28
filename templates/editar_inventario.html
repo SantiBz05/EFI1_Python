@@ -1,0 +1,32 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Inventario</h4>
+    <form action="" method="post">
+        <label for="tipo">Tipo</label>
+        <select name="tipo" class="form-control mb-2" required>
+            <option value="equipo">Equipo</option>
+            <option value="accesorio">Accesorio</option>
+        </select>
+
+        <label for="producto">Producto</label>
+        <select name="producto" class="form-control mb-2" required>
+            {% for equipo in equipos %}
+                <option value="{{ equipo.id }}">{{ equipo.nombre }}</option>
+            {% endfor %}
+            {% for accesorio in accesorios %}
+                <option value="{{ accesorio.id }}">{{ accesorio.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="cantidadDisponible">Cantidad Disponible</label>
+        <input type="number" name="cantidadDisponible" class="form-control mb-2" value="{{ inventario.cantidadDisponible }}" required>
+        
+        <label for="ubicacionAlmacen">Ubicación en Almacén</label>
+        <input type="text" name="ubicacionAlmacen" class="form-control mb-2" value="{{ inventario.ubicacionAlmacen }}" required>
+        
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

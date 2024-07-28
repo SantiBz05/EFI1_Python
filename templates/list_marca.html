@@ -8,16 +8,15 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-4">
-            <h4>Ingresa una nueva marca</h4>
+            <h4>Ingresa una Nueva Marca</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre de la Marca">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre de la Marca" required>
                 <label for="fabricante">Fabricante</label>
-                <select name="fabricante" id="" class="form-control mb-2">
+                <select name="fabricante" id="" class="form-control mb-2" required>
                     {% for fabricante in fabricantes %}
-                        <option value="{{fabricante.id}}">{{fabricante.nombre}}</option>
+                        <option value="{{ fabricante.id }}">{{ fabricante.nombre }}</option>
                     {% endfor %}
                 </select>
                 <button type="submit" class="btn btn-success">Guardar</button>
@@ -30,17 +29,26 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Fabricante</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for marca in marcas %}
                     <tr>
-                        <td>{{ marca.nombre }} </td>
+                        <td>{{ marca.nombre }}</td>
                         <td><a href="{{ url_for('marcas_by_fabricante', id=marca.fabricante.id) }}">{{ marca.fabricante.nombre }}</a></td>
+                        <td><a href="{{ url_for('marca_editar', id=marca.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_marca', id=marca.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta marca?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
     </div>
 </div>
-    
 {% endblock %}

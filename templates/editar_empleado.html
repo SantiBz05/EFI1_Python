@@ -1,0 +1,23 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Empleado</h4>
+    <form action="" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" class="form-control mb-2" value="{{ empleado.nombre }}" required>
+
+        <label for="puesto">Puesto</label>
+        <input type="text" name="puesto" class="form-control mb-2" value="{{ empleado.puesto }}" required>
+
+        <label for="sucursal">Sucursal</label>
+        <select name="sucursal" class="form-control mb-2" required>
+            {% for sucursal in sucursales %}
+                <option value="{{ sucursal.id }}">{{ sucursal.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

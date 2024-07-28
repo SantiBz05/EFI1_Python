@@ -3,17 +3,18 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-4">
-            <h4>Ingresar nuevo registro de Ventas </h4>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h4>Ingresar Nuevo Registro de Ventas </h4>
             <form action="" method="post">
                 <label for="cliente">Cliente</label>
-                <select name="cliente" id="cliente" class="form-control mb-2">
+                <select name="cliente" id="cliente" class="form-control mb-2" required>
                     {% for cliente in clientes %}
                         <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
                     {% endfor %}
                 </select>
                 <label for="producto">Producto</label>
-                <select name="producto" id="producto" class="form-control mb-2">
+                <select name="producto" id="producto" class="form-control mb-2" required>
                     {% for producto in equipos %}
                         <option value="{{ producto.id }}">{{ producto.nombre }}</option>
                     {% endfor %}
@@ -22,43 +23,56 @@
                     {% endfor %}
                 </select>
                 <label for="tipo">Tipo</label>
-                <select name="tipo" id="tipo" class="form-control mb-2">
+                <select name="tipo" id="tipo" class="form-control mb-2" required>
                     <option value="equipo">Equipo</option>
                     <option value="accesorio">Accesorio</option>
                 </select>
                 <label for="cantidad">Cantidad</label>
-                <input type="text" name="cantidad" class="form-control mb-2" placeholder="Cantidad de Venta">
+                <input type="text" name="cantidad" class="form-control mb-2" placeholder="Cantidad de Venta" required>
                 <label for="fecha">Fecha de Venta</label>
-                <input type="text" name="fecha" class="form-control mb-2" placeholder="Fecha de Venta">
+                <input type="date" name="fecha" class="form-control mb-2" placeholder="Fecha de Venta" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
+            <div class="col-3"></div>
         </div>
-        <div class="col-8">
-            <h4>Listado del Inventario</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Producto</th>
-                        <th>Tipo</th>
-                        <th>Cantidad</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for venta in ventas %}
-                    <tr>
-                        <td><a href="{{ url_for('ventas_by_cliente', cliente_id=venta.cliente.id) }}">{{ venta.cliente.nombre }}</a></td>
-                        <td><a href="{{ url_for('ventas_by_producto', producto=venta.producto) }}">{{ venta.producto }}</a></td>
-                        <td><a href="{{ url_for('ventas_by_tipo', tipo=venta.tipo) }}">{{ venta.tipo }}</a></td>
-                        <td>{{ venta.cantidad }}</td>
-                        <td><a href="{{ url_for('ventas_by_fecha', fecha=venta.fecha) }}">{{ venta.fecha }}</a></td>
-                        <td>{{ venta.total }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="col-12 text-center">
+                    <h4>Listado del Ventas</h4>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Tipo</th>
+                            <th>Cantidad</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for venta in ventas %}
+                        <tr>
+                            <td><a href="{{ url_for('ventas_by_cliente', cliente_id=venta.cliente.id) }}">{{ venta.cliente.nombre }}</a></td>
+                            <td><a href="{{ url_for('ventas_by_producto', producto=venta.producto) }}">{{ venta.producto }}</a></td>
+                            <td><a href="{{ url_for('ventas_by_tipo', tipo=venta.tipo) }}">{{ venta.tipo }}</a></td>
+                            <td>{{ venta.cantidad }}</td>
+                            <td><a href="{{ url_for('ventas_by_fecha', fecha=venta.fecha) }}">{{ venta.fecha }}</a></td>
+                            <td>{{ venta.total }}</td>
+                            <td><a href="{{ url_for('venta_editar', id=venta.id) }}" class="btn btn-success">Editar</a></td>
+                            <td>
+                                <form action="{{ url_for('eliminar_venta', id=venta.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta venta?');">
+                                    <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form>
+                            </td>                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

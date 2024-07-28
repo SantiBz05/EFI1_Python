@@ -8,26 +8,34 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-4">
-            <h4>Inserta una nueva Categoria</h4>
+            <h4>Ingresa una Nueva Categoría</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre de la Categoria">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre de la Categoría" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
         <div class="col-8">
-            <h4>Listado de Categorias</h4>
+            <h4>Listado de Categorías</h4>
             <table class="table">     
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for categoria in categorias %}
                     <tr>
-                        <td>{{categoria.nombre}}</td>
+                        <td>{{ categoria.nombre }}</td>
+                        <td><a href="{{ url_for('categoria_editar', id=categoria.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_categoria', id=categoria.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta categoría?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -35,5 +43,4 @@
         </div>
     </div>
 </div>
-    
 {% endblock %}

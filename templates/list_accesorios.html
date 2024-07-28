@@ -4,14 +4,14 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h4>Ingresa un nuevo Accesorio</h4>
+            <h4>Ingresa un Nuevo Accesorio</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Accesorio">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Accesorio" required>
                 <label for="descripcion">Descripcion</label>
-                <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion del Accesorio">
+                <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion del Accesorio" required>
                 <label for="precio">Precio</label>
-                <input type="text" name="precio" class="form-control mb-2" placeholder="Precio del Accesorio">
+                <input type="text" name="precio" class="form-control mb-2" placeholder="Precio del Accesorio" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -23,6 +23,8 @@
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Precio</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for accesorio in accesorios %}
@@ -30,6 +32,12 @@
                         <td>{{ accesorio.nombre }} </td>
                         <td>{{ accesorio.descripcion }} </td>
                         <td>{{ accesorio.precio }}</td>
+                        <td><a href="{{ url_for('accesorio_editar', id=accesorio.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_accesorio', id=accesorio.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este accesorio?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>

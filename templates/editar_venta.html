@@ -1,0 +1,39 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite la Venta</h4>
+    <form action="" method="post">
+        <label for="cliente">Cliente</label>
+        <select name="cliente" class="form-control mb-2" required>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="tipo">Tipo</label>
+        <select name="tipo" class="form-control mb-2" required>
+            <option value="equipo">Equipo</option>
+            <option value="accesorio">Accesorio</option>
+        </select>
+
+        <label for="producto">Producto</label>
+        <select name="producto" class="form-control mb-2" required>
+            {% for equipo in equipos %}
+                <option value="{{ equipo.id }}">{{ equipo.nombre }}</option>
+            {% endfor %}
+            {% for accesorio in accesorios %}
+                <option value="{{ accesorio.id }}">{{ accesorio.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="fecha">Fecha</label>
+        <input type="date" name="fecha" class="form-control mb-2" value="{{ venta.fecha }}" required>
+
+        <label for="cantidad">Cantidad</label>
+        <input type="number" name="cantidad" class="form-control mb-2" value="{{ venta.cantidad }}" required>
+
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

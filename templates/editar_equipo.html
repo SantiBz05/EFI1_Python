@@ -1,0 +1,48 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Equipo</h4>
+    <form action="" method="post">
+        <label for="modelo">Modelo</label>
+        <select name="modelo" class="form-control mb-2" required>
+            {% for modelo in modelos %}
+                <option value="{{ modelo.id }}">{{ modelo.modelo }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="marca">Marca</label>
+        <select name="marca" class="form-control mb-2" required>
+            {% for marca in marcas %}
+                <option value="{{ marca.id }}">{{ marca.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="categoria">Categoría</label>
+        <select name="categoria" class="form-control mb-2" required>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="precio">Precio</label>
+        <input type="number" name="precio" class="form-control mb-2" value="{{ equipo.precio }}" required>
+        
+        <label for="caracteristicas">Características</label>
+        <select name="caracteristicas" class="form-control mb-2" required>
+            {% for caracteristica in caracteristicas %}
+                <option value="{{ caracteristica.id }}">{{ caracteristica.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="proveedor">Proveedor</label>
+        <select name="proveedor" class="form-control mb-2" required>
+            {% for proveedor in proveedores %}
+                <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

@@ -13,9 +13,9 @@
             <h4>Ingresar Nueva Caracteristica</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nueva Caracteristica">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nueva Caracteristica" required>
                 <label for="descripcion">Descripcion</label>
-                <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion">
+                <input type="text" name="descripcion" class="form-control mb-2" placeholder="Descripcion" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -26,12 +26,20 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for caracteristica in añadirCaracteristica %}
                     <tr>
                         <td>{{ caracteristica.nombre }} </td>
                         <td>{{ caracteristica.descripcion }} </td>
+                        <td><a href="{{ url_for('editar_caracteristica', id=caracteristica.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_caracteristica', id=caracteristica.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta característica?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>

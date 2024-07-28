@@ -3,6 +3,7 @@ from app import db
 class Marca(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     fabricante_id = db.Column(db.Integer, db.ForeignKey('fabricante.id'), nullable=False)
     fabricante = db.relationship('Fabricante', backref=db.backref('modelos', lazy=True))
@@ -14,6 +15,7 @@ class Marca(db.Model):
 class Categoria(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre
@@ -23,6 +25,7 @@ class Proveedor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     contacto = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre
@@ -34,6 +37,7 @@ class Inventario(db.Model):
     producto = db.Column(db.String(100)) 
     cantidadDisponible = db.Column(db.Integer)
     ubicacionAlmacen = db.Column(db.String(100))
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.producto
@@ -44,6 +48,7 @@ class Accesorios(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(1000), nullable=False)
     precio = db.Column(db.Integer, nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre
@@ -53,6 +58,7 @@ class Caracteristicas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(1000), nullable=False)  
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre
@@ -62,6 +68,7 @@ class Fabricante(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     origen = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre    
@@ -72,11 +79,15 @@ class Modelo(db.Model):
     modelo = db.Column(db.String(50), nullable=False)
     anioLanzamiento = db.Column(db.Integer, nullable=False)
     sistemaOperativo = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
+    def __str__(self) -> str:
+        return self.modelo    
 
 class Equipo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     precio = db.Column(db.Integer, nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     modelo_id = db.Column(db.Integer, db.ForeignKey('modelo.id'), nullable=False)
     marca_id = db.Column(db.Integer, db.ForeignKey('marca.id'), nullable=False)  
@@ -98,6 +109,7 @@ class Pedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.Date, nullable=False)
     total = db.Column(db.Integer, nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     proveedor_id = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
     proveedor = db.relationship('Proveedor', backref=db.backref('pedidos', lazy=True))
@@ -110,6 +122,7 @@ class Sucursal(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(50), nullable=False)
     telefono = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre    
@@ -118,6 +131,7 @@ class Empleado(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     puesto = db.Column(db.String(50), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     sucursal_id = db.Column(db.Integer, db.ForeignKey('sucursal.id'), nullable=False)
     sucursal = db.relationship('Sucursal', backref=db.backref('empleados', lazy=True))
@@ -132,6 +146,7 @@ class Cliente(db.Model):
     telefono = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     fechaRegistro = db.Column(db.Date, nullable=False)
+    activo = db.Column(db.Boolean, default=True)
 
     def __str__(self) -> str:
         return self.nombre    
@@ -143,6 +158,7 @@ class Venta(db.Model):
     total = db.Column(db.Integer, nullable=False)
     tipo = db.Column(db.String(50))
     producto = db.Column(db.String(100)) 
+    activo = db.Column(db.Boolean, default=True)
 
     cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'), nullable=False)
     cliente = db.relationship('Cliente', backref=db.backref('ventas', lazy=True))

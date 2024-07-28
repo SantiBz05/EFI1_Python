@@ -1,0 +1,23 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Pedido</h4>
+    <form action="" method="post">
+        <label for="proveedor">Proveedor</label>
+        <select name="proveedor" class="form-control mb-2" required>
+            {% for proveedor in proveedores %}
+                <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="fecha">Fecha</label>
+        <input type="date" name="fecha" class="form-control mb-2" value="{{ pedido.fecha }}" required>
+
+        <label for="total">Total</label>
+        <input type="number" name="total" class="form-control mb-2" value="{{ pedido.total }}" required>
+
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

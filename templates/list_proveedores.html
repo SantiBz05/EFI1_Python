@@ -5,12 +5,12 @@
     <div class="row">
 
         <div class="col-4">
-            <h4>Ingresa un nuevo Proveedor</h4>
+            <h4>Ingresa un Nuevo Proveedor</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Proveedor">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Proveedor" required>
                 <label for="contacto">Contacto</label>
-                <input type="text" name="contacto" class="form-control mb-2" placeholder="Contacto del Proveedor">
+                <input type="text" name="contacto" class="form-control mb-2" placeholder="Contacto del Proveedor" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -21,12 +21,20 @@
                     <tr>
                         <th>Nombre</th>
                         <th>contacto</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for proveedor in proveedores %}
                     <tr>
                         <td>{{ proveedor.nombre }} </td>
                         <td>{{ proveedor.contacto }} </td>
+                        <td><a href="{{ url_for('proveedor_editar', id=proveedor.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_proveedor', id=proveedor.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este proveedor?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>

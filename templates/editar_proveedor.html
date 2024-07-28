@@ -1,0 +1,16 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Proveedor</h4>
+    <form action="" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" class="form-control mb-2" value="{{ proveedor.nombre }}" required>
+        
+        <label for="contacto">Contacto</label>
+        <input type="text" name="contacto" class="form-control mb-2" value="{{ proveedor.contacto }}" required>
+        
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

@@ -8,15 +8,15 @@
             <h4>Ingrese un Nuevo Pedido</h4>
             <form action="" method="post">
                 <label for="proveedor">Proveedor</label>
-                <select name="proveedor" id="" class="form-control mb-2">
+                <select name="proveedor" id="" class="form-control mb-2" required>
                     {% for proveedor in proveedores %}
                         <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
                     {% endfor %}
                 </select>
                 <label for="fecha">fecha</label>
-                <input type="text" name="fecha" class="form-control mb-2" placeholder="Fecha del Pedido">
+                <input type="date" name="fecha" class="form-control mb-2" placeholder="Fecha del Pedido" required>
                 <label for="total">Total</label>
-                <input type="text" name="total" class="form-control mb-2" placeholder="Total del Pedido">
+                <input type="text" name="total" class="form-control mb-2" placeholder="Total del Pedido" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -28,6 +28,8 @@
                         <th>Proveedor</th>
                         <th>Fecha</th>
                         <th>Total</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
@@ -35,6 +37,12 @@
                         <td><a href="{{ url_for('pedidos_by_proveedor', proveedor_id=pedido.proveedor.id) }}">{{ pedido.proveedor.nombre }}</a></td>
                         <td><a href="{{ url_for('pedidos_by_fecha', fecha=pedido.fecha) }}">{{ pedido.fecha }}</a></td>
                         <td>{{ pedido.total }}</td>
+                        <td><a href="{{ url_for('pedido_editar', id=pedido.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_pedido', id=pedido.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este pedido?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>

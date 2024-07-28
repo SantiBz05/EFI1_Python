@@ -10,14 +10,14 @@
     <div class="row">
 
         <div class="col-4">
-            <h4>Crea un nuevo Modelo</h4>
+            <h4>Ingresa un Nuevo Modelo</h4>
             <form action="" method="post">
                 <label for="modelo">Modelo</label>
-                <input type="text" name="modelo" class="form-control mb-2" placeholder="Modelo">
+                <input type="text" name="modelo" class="form-control mb-2" placeholder="Modelo" required>
                 <label for="anioLanzamiento">Año de Lanzamiento</label>
-                <input type="number" max="2024" min="2000" name="anioLanzamiento" class="form-control mb-2" placeholder="Año de Lanzamiento">
+                <input type="number" max="2024" min="2000" name="anioLanzamiento" class="form-control mb-2" placeholder="Año de Lanzamiento" required>
                 <label for="sistemaOperativo">Sistema Operativo</label>
-                <input type="text" name="sistemaOperativo" class="form-control mb-2" placeholder="Sistema Operativo">
+                <input type="text" name="sistemaOperativo" class="form-control mb-2" placeholder="Sistema Operativo" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -30,6 +30,8 @@
                         <th>Modelo</th>
                         <th>Año Lanzamiento</th>
                         <th>Sistema Operativo</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for modelo in modelos %}
@@ -37,6 +39,12 @@
                         <td>{{ modelo.modelo }} </td>
                         <td><a href="{{ url_for('modelos_by_anio', anio=modelo.anioLanzamiento) }}">{{ modelo.anioLanzamiento }}</a></td>
                         <td><a href="{{ url_for('modelos_by_sistema_operativo', sist_op=modelo.sistemaOperativo) }}">{{ modelo.sistemaOperativo }}</a></td>
+                        <td><a href="{{ url_for('modelo_editar', id=modelo.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_modelo', id=modelo.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este modelo?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -3,24 +3,25 @@
 {% block content %}
 <div class="container">
     <div class="row">
-
-        <div class="col-4">
+        <div class="col-3"></div>
+        <div class="col-6">
             <h4>Ingrese un Nuevo Cliente</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Cliente">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Cliente" required>
                 <label for="direccion">Direccion</label>
-                <input type="text" name="direccion" class="form-control mb-2" placeholder="Direccion del Cliente">
+                <input type="text" name="direccion" class="form-control mb-2" placeholder="Direccion del Cliente" required>
                 <label for="telefono">Telefono</label>
-                <input type="text" name="telefono" class="form-control mb-2" placeholder="Telefono del Cliente">
+                <input type="text" name="telefono" class="form-control mb-2" placeholder="Telefono del Cliente" required>
                 <label for="email">Email</label>
-                <input type="text" name="email" class="form-control mb-2" placeholder="Email del Cliente">           
+                <input type="text" name="email" class="form-control mb-2" placeholder="Email del Cliente" required>           
                 <label for="fechaRegistro">Fecha de Resgistro</label>
-                <input type="text" name="fechaRegistro" class="form-control mb-2" placeholder="Feha de Registro del Cliente">
+                <input type="date" name="fechaRegistro" class="form-control mb-2" placeholder="Feha de Registro del Cliente" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
+            <div class="col-3"></div>
         </div>
-        <div class="col-8">
+        <div class="col-12">
             <h4>Listado de Clientes</h4>
             <table class="table">     
                 <thead>
@@ -30,6 +31,8 @@
                         <th>Telefono</th>
                         <th>Email</th>
                         <th>Fecha de Registro</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for cliente in clientes %}
@@ -39,6 +42,12 @@
                         <td>{{ cliente.telefono }}</td>
                         <td>{{ cliente.email }}</td>
                         <td><a href="{{ url_for('clientes_by_fecha', fecha=cliente.fechaRegistro) }}">{{ cliente.fechaRegistro }}</a></td>
+                        <td><a href="{{ url_for('cliente_editar', id=cliente.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_cliente', id=cliente.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este cliente?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                     
                     </tr>
                     {% endfor %}
                 </tbody>

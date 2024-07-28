@@ -8,14 +8,15 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-4">
-            <h4>Inserta un nuevo Fabricante</h4>
+            <h4>Ingresa un Nuevo Fabricante</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Fabricante">
-                <label for="Origen">Pais de Origen</label>
-                <input type="text" name="origen" class="form-control mb-2" placeholder="Origen del Fabricante">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Fabricante" required>
+                
+                <label for="origen">Origen</label>
+                <input type="text" name="origen" class="form-control mb-2" placeholder="Origen del Fabricante" required>
+                
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -26,19 +27,26 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Origen</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for fabricante in fabricantes %}
                     <tr>
-                        <td>{{ fabricante.nombre }} </td>
-                        <td>{{ fabricante.origen }} </td>
+                        <td>{{ fabricante.nombre }}</td>
+                        <td>{{ fabricante.origen }}</td>
+                        <td><a href="{{ url_for('fabricante_editar', id=fabricante.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_fabricante', id=fabricante.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este fabricante?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        
     </div>
 </div>
-    
 {% endblock %}

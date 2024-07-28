@@ -1,0 +1,25 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>Edite el Cliente</h4>
+    <form action="" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" class="form-control mb-2" value="{{ cliente.nombre }}" required>
+
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccion" class="form-control mb-2" value="{{ cliente.direccion }}" required>
+
+        <label for="telefono">Teléfono</label>
+        <input type="text" name="telefono" class="form-control mb-2" value="{{ cliente.telefono }}" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" class="form-control mb-2" value="{{ cliente.email }}" required> 
+
+        <label for="fechaRegistro">Fecha de Registro</label>
+        <input type="date" name="fechaRegistro" class="form-control mb-2" value="{{ cliente.fechaRegistro }}" required> 
+
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+{% endblock %}

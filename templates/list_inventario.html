@@ -4,10 +4,10 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h4>Ingresar nuevo registro al Inventario </h4>
+            <h4>Ingresar Nuevo Registro al Inventario </h4>
             <form action="" method="post">
                 <label for="producto">Producto</label>
-                <select name="producto" id="" class="form-control mb-2">
+                <select name="producto" id="" class="form-control mb-2" required>
                     {% for producto in equipos %}
                         <option value="{{ producto.id }}"> {{ producto.nombre }} </option>
                     {% endfor %}
@@ -16,14 +16,14 @@
                     {% endfor %}
                 </select>
                 <label for="tipo">Tipo</label>
-                <select name="tipo" id="" class="form-control mb-2">
+                <select name="tipo" id="" class="form-control mb-2" required>
                     <option value="equipo">Equipo</option>
                     <option value="accesorio">Accesorio</option>
                 </select>
                 <label for="cantidadDisponible">Cantidad Disponible</label>
-                <input type="text" name="cantidadDisponible" class="form-control mb-2" placeholder="Cantidad Disponible">
+                <input type="text" name="cantidadDisponible" class="form-control mb-2" placeholder="Cantidad Disponible" required>
                 <label for="ubicacionAlmacen">Ubicacion en Almacen</label>
-                <input type="text" name="ubicacionAlmacen" class="form-control mb-2" placeholder="Ubicacion en Almacen">
+                <input type="text" name="ubicacionAlmacen" class="form-control mb-2" placeholder="Ubicacion en Almacen" required>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>            
@@ -36,6 +36,8 @@
                         <th>Tipo</th>
                         <th>Cantidad Disponible</th>
                         <th>Ubicacion en Almacen</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +47,12 @@
                         <td><a href="{{ url_for('inventarios_by_tipo', tipo=inventario.tipo) }}">{{ inventario.tipo }}</a></td>
                         <td>{{ inventario.cantidadDisponible }}</td>
                         <td><a href="{{ url_for('inventarios_by_ubicacion', ubicacion=inventario.ubicacionAlmacen) }}">{{ inventario.ubicacionAlmacen }}</a></td>
+                        <td><a href="{{ url_for('inventario_editar', id=inventario.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_inventario', id=inventario.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este inventario?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                    
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -8,11 +8,11 @@
             <h4>Ingrese un Nuevo Empleado</h4>
             <form action="" method="post">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Empleado">
+                <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Empleado" required>
                 <label for="puesto">Puesto</label>
-                <input type="text" name="puesto" class="form-control mb-2" placeholder="Puesto del Empleado">
+                <input type="text" name="puesto" class="form-control mb-2" placeholder="Puesto del Empleado" required> 
                 <label for="Sucursal">Sucursal</label>
-                <select name="sucursal" id="" class="form-control mb-2">
+                <select name="sucursal" id="" class="form-control mb-2" required>
                     {% for sucursal in sucursales %}
                         <option value="{{sucursal.id}}">{{sucursal.nombre}}</option>
                     {% endfor %}
@@ -28,6 +28,8 @@
                         <th>Nombre</th>
                         <th>Puesto</th>
                         <th>Sucursal</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                 </thead>
                 <tbody>
                     {% for empleado in empleados %}
@@ -35,6 +37,12 @@
                         <td>{{ empleado.nombre }} </td>
                         <td><a href="{{ url_for('empleados_by_puesto', puesto=empleado.puesto) }}">{{ empleado.puesto }}</a></td>
                         <td><a href="{{ url_for('empleados_by_sucursal', sucursal_id=empleado.sucursal.id) }}">{{ empleado.sucursal.nombre }}</a></td>
+                        <td><a href="{{ url_for('empleado_editar', id=empleado.id) }}" class="btn btn-success">Editar</a></td>
+                        <td>
+                            <form action="{{ url_for('eliminar_empleado', id=empleado.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este empleado?');">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
+                        </td>                   
                     </tr>
                     {% endfor %}
                 </tbody>
