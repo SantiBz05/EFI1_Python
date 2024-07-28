@@ -1,0 +1,31 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Inventarios del Tipo {{ tipo }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Codigo de Producto</th>
+                    <th>Cantidad Disponible</th>
+                    <th>Ubicación Almacén</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventario in inventarios %}
+                <tr>
+                    <td>{{ inventario.tipo }}</td>
+                    <td>{{ inventario.producto }}</td>
+                    <td>{{ inventario.cantidadDisponible }}</td>
+                    <td>{{ inventario.ubicacionAlmacen }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Marcas del Fabricante {{ fabricante }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for marca in marcas %}
+                <tr>
+                    <td>{{ marca.nombre }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

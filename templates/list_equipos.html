@@ -74,12 +74,12 @@
                     {% for equipo in equipos %}
                     <tr>
                         <td>{{ equipo.modelo.modelo }}</td>
-                        <td>{{ equipo.marca.nombre }}</td>
-                        <td>{{ equipo.categoria.nombre }}</td>
+                        <td><a href="{{ url_for('equipos_by_marca', id=equipo.marca.id) }}"> {{ equipo.marca.nombre }} </a></td>
+                        <td><a href="{{ url_for('equipos_by_categoria', id=equipo.categoria.id) }}">{{ equipo.categoria.nombre }}</a></td>
                         <td>{{ equipo.precio }}</td>
                         <td>{{ equipo.caracteristicas.nombre }}</td>
                         <td>{{ equipo.caracteristicas.descripcion }}</td>
-                        <td>{{ equipo.proveedor.nombre }}</td>
+                        <td><a href="{{ url_for('equipos_by_proveedor', id=equipo.proveedor.id) }}">{{ equipo.proveedor.nombre }}</a></td>
                         <td>Editar</td>
                         <td>Borrar</td>
                     </tr>

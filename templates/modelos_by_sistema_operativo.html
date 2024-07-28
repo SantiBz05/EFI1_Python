@@ -1,0 +1,29 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Modelos con el Sistema Operativo {{ sistema_operativo }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Año de Lanzamiento</th>
+                    <th>Sistema Operativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for modelo in modelos %}
+                <tr>
+                    <td>{{ modelo.modelo }}</td>
+                    <td>{{ modelo.anioLanzamiento }}</td>
+                    <td>{{ modelo.sistemaOperativo }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -72,10 +72,6 @@ class Modelo(db.Model):
     modelo = db.Column(db.String(50), nullable=False)
     anioLanzamiento = db.Column(db.Integer, nullable=False)
     sistemaOperativo = db.Column(db.String(50), nullable=False)
-    categoria = db.Column(db.String(50), nullable=False)
-
-    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
-    categoria = db.relationship('Categoria', backref=db.backref('modelos', lazy=True))
 
 
 class Equipo(db.Model):

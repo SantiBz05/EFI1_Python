@@ -18,12 +18,6 @@
                 <input type="number" max="2024" min="2000" name="anioLanzamiento" class="form-control mb-2" placeholder="Año de Lanzamiento">
                 <label for="sistemaOperativo">Sistema Operativo</label>
                 <input type="text" name="sistemaOperativo" class="form-control mb-2" placeholder="Sistema Operativo">
-                <label for="categoria">Categoria</label>
-                <select name="categoria" id="" class="form-control mb-2">
-                    {% for categoria in categorias %}
-                        <option value="{{categoria.id}}">{{categoria.nombre}}</option>
-                    {% endfor %}
-                </select>
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -34,7 +28,6 @@
                 <thead>
                     <tr>
                         <th>Modelo</th>
-                        <th>Categoria</th>
                         <th>Año Lanzamiento</th>
                         <th>Sistema Operativo</th>
                 </thead>
@@ -42,9 +35,8 @@
                     {% for modelo in modelos %}
                     <tr>
                         <td>{{ modelo.modelo }} </td>
-                        <td>{{ modelo.categoria.nombre }} </td>
-                        <td>{{ modelo.anioLanzamiento }}</td>
-                        <td>{{ modelo.sistemaOperativo }}</td>
+                        <td><a href="{{ url_for('modelos_by_anio', anio=modelo.anioLanzamiento) }}">{{ modelo.anioLanzamiento }}</a></td>
+                        <td><a href="{{ url_for('modelos_by_sistema_operativo', sist_op=modelo.sistemaOperativo) }}">{{ modelo.sistemaOperativo }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

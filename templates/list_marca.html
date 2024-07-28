@@ -35,7 +35,7 @@
                     {% for marca in marcas %}
                     <tr>
                         <td>{{ marca.nombre }} </td>
-                        <td>{{ marca.fabricante.nombre }} </td>
+                        <td><a href="{{ url_for('marcas_by_fabricante', id=marca.fabricante.id) }}">{{ marca.fabricante.nombre }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

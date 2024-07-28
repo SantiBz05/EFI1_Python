@@ -38,7 +38,7 @@
                         <td>{{ cliente.direccion }} </td>
                         <td>{{ cliente.telefono }}</td>
                         <td>{{ cliente.email }}</td>
-                        <td>{{ cliente.fechaRegistro }}</td>
+                        <td><a href="{{ url_for('clientes_by_fecha', fecha=cliente.fechaRegistro) }}">{{ cliente.fechaRegistro }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

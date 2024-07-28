@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, jsonify
+from flask import Flask, render_template, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -37,6 +37,18 @@ def marcas():
         fabricantes=fabricantes,
         )
 
+@app.route("/marcas/fabricante/<int:id>")
+def marcas_by_fabricante(id):
+    marcas = Marca.query.filter_by(fabricante_id=id).all()
+    fabricante = Fabricante.query.get(id)
+
+    return render_template(
+        "marcas_by_fabricante.html",
+        marcas=marcas,
+        fabricante=fabricante.nombre,
+    )
+
+
 @app.route("/list_categorias", methods=['POST', 'GET'])
 def categorias():
     categorias = Categoria.query.all()
@@ -73,18 +85,15 @@ def fabricantes():
 @app.route("/list_modelos", methods = ['POST', 'GET'])
 def modelos():
     modelos = Modelo.query.all()
-    categorias = Categoria.query.all()
     
     if request.method == 'POST':
         modelo = request.form['modelo']
         anio = request.form['anioLanzamiento']
         sistOp = request.form['sistemaOperativo']
-        categoria = request.form['categoria']
         nuevoModelo = Modelo(
             modelo=modelo,
             anioLanzamiento=anio,
             sistemaOperativo=sistOp,
-            categoria_id=categoria,
         )
         db.session.add(nuevoModelo)
         db.session.commit()
@@ -93,8 +102,28 @@ def modelos():
     return render_template(
         'list_modelos.html',
         modelos=modelos,
-        categorias=categorias,
     )
+
+@app.route("/modelos/anio/<int:anio>")
+def modelos_by_anio(anio):
+    modelos = Modelo.query.filter_by(anioLanzamiento=anio).all()
+    
+    return render_template(
+        "modelos_by_anio.html",
+        modelos=modelos,
+        anio=anio,
+    )
+
+@app.route("/modelos/sistema_operativo/<sist_op>")
+def modelos_by_sistema_operativo(sist_op):
+    modelos = Modelo.query.filter_by(sistemaOperativo=sist_op).all()
+       
+    return render_template(
+        "modelos_by_sistema_operativo.html",
+        modelos=modelos,
+        sistema_operativo=sist_op,
+    )
+
 
 @app.route("/list_accesorios", methods=['POST', 'GET'])
 def accesorios():
@@ -161,6 +190,27 @@ def inventarios():
         accesorios=accesorios,
     )
 
+@app.route("/inventarios/tipo/<string:tipo>")
+def inventarios_by_tipo(tipo):
+    inventarios = Inventario.query.filter_by(tipo=tipo).all()
+    
+    return render_template(
+        "inventarios_by_tipo.html",
+        inventarios=inventarios,
+        tipo=tipo,
+    )
+
+@app.route("/inventarios/ubicacion/<string:ubicacion>")
+def inventarios_by_ubicacion(ubicacion):
+    inventarios = Inventario.query.filter_by(ubicacionAlmacen=ubicacion).all()
+    
+    return render_template(
+        "inventarios_by_ubicacion.html",
+        inventarios=inventarios,
+        ubicacion=ubicacion,
+    )
+
+
 @app.route("/list_caracteristicas", methods=['POST', 'GET'])
 def añadirCaracteristica():
     añadirCaracteristica = Caracteristicas.query.all()
@@ -217,6 +267,39 @@ def equipos():
         equipos=equipos,
     )
 
+@app.route("/equipos/marca/<int:id>")
+def equipos_by_marca(id):
+    equipos = Equipo.query.filter_by(marca_id=id).all()
+    marca = Marca.query.get(id).nombre
+
+    return render_template(
+        "equipos_by_marca.html",
+        equipos=equipos,
+        marca=marca,
+    )
+
+@app.route("/equipos/categoria/<int:id>")
+def equipos_by_categoria(id):
+    equipos = Equipo.query.filter_by(categoria_id=id).all()
+    categoria = Categoria.query.get(id)
+
+    return render_template(
+        "equipos_by_categoria.html",
+        equipos=equipos,
+        categoria=categoria,
+    )
+
+@app.route("/equipos/proveedor/<int:id>")
+def equipos_by_proveedor(id):
+    equipos = Equipo.query.filter_by(proveedor_id=id).all()
+    proveedor = Proveedor.query.get(id)
+
+    return render_template(
+        "equipos_by_proveedor.html",
+        equipos=equipos,
+        proveedor=proveedor,
+    )
+
 @app.route("/list_pedidos", methods=['POST', 'GET'])
 def pedidos():
     pedidos = Pedido.query.all()
@@ -239,6 +322,27 @@ def pedidos():
         'list_pedidos.html', 
         pedidos=pedidos,
         proveedores=proveedores,   
+    )
+
+@app.route("/pedidos/proveedor/<int:proveedor_id>")
+def pedidos_by_proveedor(proveedor_id):
+    pedidos = Pedido.query.filter_by(proveedor_id=proveedor_id).all()
+    proveedor = Proveedor.query.get(proveedor_id)
+    
+    return render_template(
+        "pedidos_by_proveedor.html",
+        pedidos=pedidos,
+        proveedor=proveedor,
+    )
+
+@app.route("/pedidos/fecha/<string:fecha>")
+def pedidos_by_fecha(fecha):
+    pedidos = Pedido.query.filter_by(fecha=fecha).all()
+    
+    return render_template(
+        "pedidos_by_fecha.html",
+        pedidos=pedidos,
+        fecha=fecha,
     )
 
 
@@ -268,6 +372,16 @@ def clientes():
         clientes=clientes,
     )
 
+@app.route("/clientes/fecha_registro/<string:fecha>")
+def clientes_by_fecha(fecha):
+    clientes = Cliente.query.filter_by(fechaRegistro=fecha).all()
+    
+    return render_template(
+        "clientes_by_fecha.html",
+        clientes=clientes,
+        fecha=fecha,
+    )
+
 @app.route("/list_empleados", methods=['POST', 'GET'])
 def empleados():
     empleados = Empleado.query.all()
@@ -291,6 +405,28 @@ def empleados():
         empleados=empleados,
         sucursales=sucursales,
     )
+
+@app.route("/empleados/puesto/<string:puesto>")
+def empleados_by_puesto(puesto):
+    empleados = Empleado.query.filter_by(puesto=puesto).all()
+    
+    return render_template(
+        "empleados_by_puesto.html",
+        empleados=empleados,
+        puesto=puesto,
+    )
+
+@app.route("/empleados/sucursal/<int:sucursal_id>")
+def empleados_by_sucursal(sucursal_id):
+    empleados = Empleado.query.filter_by(sucursal_id=sucursal_id).all()
+    sucursal = Sucursal.query.get(sucursal_id)
+    
+    return render_template(
+        "empleados_by_sucursal.html",
+        empleados=empleados,
+        sucursal=sucursal,
+    )
+
 
 @app.route("/list_sucursales", methods=['POST', 'GET'])
 def sucursales():
@@ -358,3 +494,45 @@ def ventas():
         equipos=equipos,
         accesorios=accesorios,
     )
+
+@app.route("/ventas/cliente/<int:cliente_id>")
+def ventas_by_cliente(cliente_id):
+    ventas = Venta.query.filter_by(cliente_id=cliente_id).all()
+    cliente = Cliente.query.get(cliente_id)
+    
+    return render_template(
+        "ventas_by_cliente.html",
+        ventas=ventas,
+        cliente=cliente,
+    )
+
+@app.route("/ventas/producto/<string:producto>")
+def ventas_by_producto(producto):
+    ventas = Venta.query.filter_by(producto=producto).all()
+    
+    return render_template(
+        "ventas_by_producto.html",
+        ventas=ventas,
+        producto=producto,
+    )
+
+@app.route("/ventas/fecha/<string:fecha>")
+def ventas_by_fecha(fecha):
+    ventas = Venta.query.filter_by(fecha=fecha).all()
+
+    return render_template(
+        "ventas_by_fecha.html",
+        ventas=ventas,
+        fecha=fecha,
+    )
+
+@app.route("/ventas/tipo/<string:tipo>")
+def ventas_by_tipo(tipo):
+    ventas = Venta.query.filter_by(tipo=tipo).all()
+    
+    return render_template(
+        "ventas_by_tipo.html",
+        ventas=ventas,
+        tipo=tipo,
+    )
+

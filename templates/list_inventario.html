@@ -15,7 +15,7 @@
                         <option value="{{ producto.id }}"> {{ producto.nombre }} </option>
                     {% endfor %}
                 </select>
-                <label for="tipo"><Tipo/label>
+                <label for="tipo">Tipo</label>
                 <select name="tipo" id="" class="form-control mb-2">
                     <option value="equipo">Equipo</option>
                     <option value="accesorio">Accesorio</option>
@@ -42,9 +42,9 @@
                     {% for inventario in inventarios %}
                     <tr>
                         <td>{{ inventario.producto }}</td>
-                        <td>{{ inventario.tipo }}</td>
+                        <td><a href="{{ url_for('inventarios_by_tipo', tipo=inventario.tipo) }}">{{ inventario.tipo }}</a></td>
                         <td>{{ inventario.cantidadDisponible }}</td>
-                        <td>{{ inventario.ubicacionAlmacen }}</td>
+                        <td><a href="{{ url_for('inventarios_by_ubicacion', ubicacion=inventario.ubicacionAlmacen) }}">{{ inventario.ubicacionAlmacen }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

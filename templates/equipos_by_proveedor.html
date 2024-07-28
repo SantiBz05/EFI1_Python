@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Equipos de la proveedor {{ proveedor }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Precio</th>
+                    <th>Caracteristicas</th>
+                    <th>Descripcion</th>
+                    <th>Proveedor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipo in equipos %}
+                <tr>
+                    <td>{{ equipo.modelo.modelo }}</td>
+                    <td>{{ equipo.marca.nombre }}</td>
+                    <td>{{ equipo.categoria.nombre }}</td>
+                    <td>{{ equipo.precio }}</td>
+                    <td>{{ equipo.caracteristicas.nombre }}</td>
+                    <td>{{ equipo.caracteristicas.descripcion }}</td>
+                    <td>{{ equipo.proveedor.nombre }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Empleados con el Puesto {{ puesto }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>Sucursal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td>{{ empleado.nombre }}</td>
+                    <td>{{ empleado.puesto }}</td>
+                    <td>{{ empleado.sucursal.nombre }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

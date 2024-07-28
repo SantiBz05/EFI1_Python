@@ -32,8 +32,8 @@
                 <tbody>
                     {% for pedido in pedidos %}
                     <tr>
-                        <td>{{ pedido.proveedor }} </td>
-                        <td>{{ pedido.fecha }} </td>
+                        <td><a href="{{ url_for('pedidos_by_proveedor', proveedor_id=pedido.proveedor.id) }}">{{ pedido.proveedor.nombre }}</a></td>
+                        <td><a href="{{ url_for('pedidos_by_fecha', fecha=pedido.fecha) }}">{{ pedido.fecha }}</a></td>
                         <td>{{ pedido.total }}</td>
                     </tr>
                     {% endfor %}

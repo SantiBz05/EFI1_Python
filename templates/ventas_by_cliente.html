@@ -1,0 +1,35 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Ventas para el Cliente {{ cliente.nombre }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ venta.producto }}</td>
+                    <td>{{ venta.tipo }}</td>
+                    <td>{{ venta.fecha }}</td>
+                    <td>{{ venta.cantidad }}</td>
+                    <td>{{ venta.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

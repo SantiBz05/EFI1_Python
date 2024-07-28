@@ -1,0 +1,29 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="col-12 text-center">
+            <h4>Listado de Pedidos del Proveedor {{ proveedor.nombre }}</h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Proveedor</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ proveedor.nombre }}</td>
+                    <td>{{ pedido.fecha }}</td>
+                    <td>{{ pedido.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

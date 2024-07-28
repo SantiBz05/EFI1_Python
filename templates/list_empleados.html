@@ -33,8 +33,8 @@
                     {% for empleado in empleados %}
                     <tr>
                         <td>{{ empleado.nombre }} </td>
-                        <td>{{ empleado.puesto }} </td>
-                        <td>{{ empleado.sucursal.nombre }}</td>
+                        <td><a href="{{ url_for('empleados_by_puesto', puesto=empleado.puesto) }}">{{ empleado.puesto }}</a></td>
+                        <td><a href="{{ url_for('empleados_by_sucursal', sucursal_id=empleado.sucursal.id) }}">{{ empleado.sucursal.nombre }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

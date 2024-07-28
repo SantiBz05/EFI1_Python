@@ -49,11 +49,11 @@
                 <tbody>
                     {% for venta in ventas %}
                     <tr>
-                        <td>{{ venta.cliente.nombre }}</td>
-                        <td>{{ venta.producto }}</td>
-                        <td>{{ venta.tipo }}</td>
+                        <td><a href="{{ url_for('ventas_by_cliente', cliente_id=venta.cliente.id) }}">{{ venta.cliente.nombre }}</a></td>
+                        <td><a href="{{ url_for('ventas_by_producto', producto=venta.producto) }}">{{ venta.producto }}</a></td>
+                        <td><a href="{{ url_for('ventas_by_tipo', tipo=venta.tipo) }}">{{ venta.tipo }}</a></td>
                         <td>{{ venta.cantidad }}</td>
-                        <td>{{ venta.fecha }}</td>
+                        <td><a href="{{ url_for('ventas_by_fecha', fecha=venta.fecha) }}">{{ venta.fecha }}</a></td>
                         <td>{{ venta.total }}</td>
                     </tr>
                     {% endfor %}
