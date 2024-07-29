@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>Listado de Equipos Inactivos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Categoria</th>
+                        <th>Precio</th>
+                        <th>Caracteristicas</th>
+                        <th>Proveedor</th>
+                        <th>Restaurar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipo in equipos %}
+                    <tr>
+                        <td>{{ equipo.modelo.modelo }}</td>
+                        <td>{{ equipo.marca.nombre }}</td>
+                        <td>{{ equipo.categoria.nombre }}</td>
+                        <td>{{ equipo.precio }}</td>
+                        <td>{{ equipo.caracteristicas.nombre }}</td>
+                        <td>{{ equipo.proveedor.nombre }}</td>
+                        <td>
+                            <form action="{{ url_for('restaurar_equipo', id=equipo.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">Restaurar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

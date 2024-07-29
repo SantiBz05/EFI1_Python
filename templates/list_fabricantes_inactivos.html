@@ -1,0 +1,33 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>Listado de Fabricantes Inactivos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Origen</th>
+                        <th>Restaurar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fabricante in fabricantes %}
+                    <tr>
+                        <td>{{ fabricante.nombre }}</td>
+                        <td>{{ fabricante.origen }}</td>
+                        <td>
+                            <form action="{{ url_for('restaurar_fabricante', id=fabricante.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">Restaurar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

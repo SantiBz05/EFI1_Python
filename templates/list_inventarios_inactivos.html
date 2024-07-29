@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>Listado de Inventarios Inactivos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Producto</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Ubicación Almacén</th>
+                        <th>Restaurar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inventario in inventarios %}
+                    <tr>
+                        <td>{{ inventario.tipo }}</td>
+                        <td>{{ inventario.producto }}</td>
+                        <td>{{ inventario.cantidadDisponible }}</td>
+                        <td>{{ inventario.ubicacionAlmacen }}</td>
+                        <td>
+                            <form action="{{ url_for('restaurar_inventario', id=inventario.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">Restaurar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

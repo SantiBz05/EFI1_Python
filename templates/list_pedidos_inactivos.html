@@ -1,0 +1,36 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>Listado de Pedidos Inactivos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Restaurar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.proveedor.nombre }}</td>
+                        <td>{{ pedido.fecha }}</td>
+                        <td>{{ pedido.total }}</td>
+                        <td>
+                            <form action="{{ url_for('restaurar_pedido', id=pedido.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">Restaurar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<a href="{{ url_for('ventas_inactivas') }}" class="btn btn-secondary mb-2">Ver Ventas Inactivas</a>

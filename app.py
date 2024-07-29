@@ -37,6 +37,18 @@ def marcas():
         fabricantes=fabricantes,
         )
 
+@app.route("/list_marcas_inactivas", methods=['GET'])
+def marcas_inactivas():
+    marcas_inactivas = Marca.query.filter_by(activo=False).all()
+    return render_template('list_marcas_inactivas.html', marcas=marcas_inactivas)
+
+@app.route("/restaurar_marca/<int:id>", methods=['POST'])
+def restaurar_marca(id):
+    marca = Marca.query.get_or_404(id)
+    marca.activo = True
+    db.session.commit()
+    return redirect(url_for('marcas'))
+
 @app.route("/marca/<id>/editar", methods=['GET', 'POST'])
 def marca_editar(id):
     marca = Marca.query.get_or_404(id)
@@ -87,6 +99,18 @@ def categorias():
 
     return render_template('list_categorias.html', categorias=categorias)
 
+@app.route("/list_categorias_inactivas", methods=['GET'])
+def categorias_inactivas():
+    categorias_inactivas = Categoria.query.filter_by(activo=False).all()
+    return render_template('list_categorias_inactivas.html', categorias=categorias_inactivas)
+
+@app.route("/restaurar_categoria/<int:id>", methods=['POST'])
+def restaurar_categoria(id):
+    categoria = Categoria.query.get_or_404(id)
+    categoria.activo = True
+    db.session.commit()
+    return redirect(url_for('categorias'))
+
 @app.route("/eliminar_categoria/<int:id>", methods=['POST'])
 def eliminar_categoria(id):
     categoria = Categoria.query.get_or_404(id)
@@ -125,6 +149,18 @@ def fabricantes():
         return redirect(url_for('fabricantes'))
 
     return render_template('list_fabricantes.html', fabricantes=fabricantes)
+
+@app.route("/list_fabricantes_inactivos", methods=['GET'])
+def fabricantes_inactivos():
+    fabricantes_inactivos = Fabricante.query.filter_by(activo=False).all()
+    return render_template('list_fabricantes_inactivos.html', fabricantes=fabricantes_inactivos)
+
+@app.route("/restaurar_fabricante/<int:id>", methods=['POST'])
+def restaurar_fabricante(id):
+    fabricante = Fabricante.query.get_or_404(id)
+    fabricante.activo = True
+    db.session.commit()
+    return redirect(url_for('fabricantes'))
 
 @app.route("/eliminar_fabricante/<int:id>", methods=['POST'])
 def eliminar_fabricante(id):
@@ -169,6 +205,18 @@ def modelos():
         'list_modelos.html',
         modelos=modelos,
     )
+
+@app.route("/list_modelos_inactivos", methods=['GET'])
+def modelos_inactivos():
+    modelos_inactivos = Modelo.query.filter_by(activo=False).all()
+    return render_template('list_modelos_inactivos.html', modelos=modelos_inactivos)
+
+@app.route("/restaurar_modelo/<int:id>", methods=['POST'])
+def restaurar_modelo(id):
+    modelo = Modelo.query.get_or_404(id)
+    modelo.activo = True
+    db.session.commit()
+    return redirect(url_for('modelos'))
 
 @app.route("/eliminar_modelo/<int:id>", methods=['POST'])
 def eliminar_modelo(id):
@@ -232,6 +280,18 @@ def accesorios():
 
     return render_template('list_accesorios.html', accesorios=accesorios)
 
+@app.route("/list_accesorios_inactivos", methods=['GET'])
+def accesorios_inactivos():
+    accesorios_inactivos = Accesorios.query.filter_by(activo=False).all()
+    return render_template('list_accesorios_inactivos.html', accesorios=accesorios_inactivos)
+
+@app.route("/restaurar_accesorio/<int:id>", methods=['POST'])
+def restaurar_accesorio(id):
+    accesorio = Accesorios.query.get_or_404(id)
+    accesorio.activo = True
+    db.session.commit()
+    return redirect(url_for('accesorios'))
+
 @app.route("/eliminar_accesorio/<int:id>", methods=['POST'])
 def eliminar_accesorio(id):
     accesorio = Accesorios.query.get_or_404(id)
@@ -271,6 +331,18 @@ def proveedores():
         return redirect(url_for('proveedores'))
 
     return render_template('list_proveedores.html', proveedores=proveedores)
+
+@app.route("/list_proveedores_inactivos", methods=['GET'])
+def proveedores_inactivos():
+    proveedores_inactivos = Proveedor.query.filter_by(activo=False).all()
+    return render_template('list_proveedores_inactivos.html', proveedores=proveedores_inactivos)
+
+@app.route("/restaurar_proveedor/<int:id>", methods=['POST'])
+def restaurar_proveedor(id):
+    proveedor = Proveedor.query.get_or_404(id)
+    proveedor.activo = True
+    db.session.commit()
+    return redirect(url_for('proveedores'))
 
 @app.route("/eliminar_proveedor/<int:id>", methods=['POST'])
 def eliminar_proveedor(id):
@@ -322,6 +394,18 @@ def inventarios():
         equipos=equipos,
         accesorios=accesorios,
     )
+
+@app.route("/list_inventarios_inactivos", methods=['GET'])
+def inventarios_inactivos():
+    inventarios_inactivos = Inventario.query.filter_by(activo=False).all()
+    return render_template('list_inventarios_inactivos.html', inventarios=inventarios_inactivos)
+
+@app.route("/restaurar_inventario/<int:id>", methods=['POST'])
+def restaurar_inventario(id):
+    inventario = Inventario.query.get_or_404(id)
+    inventario.activo = True
+    db.session.commit()
+    return redirect(url_for('inventarios'))
 
 @app.route("/eliminar_inventario/<int:id>", methods=['POST'])
 def eliminar_inventario(id):
@@ -389,6 +473,18 @@ def añadirCaracteristica():
 
     return render_template('list_caracteristicas.html', añadirCaracteristica=añadirCaracteristica)
 
+@app.route("/list_caracteristicas_inactivas", methods=['GET'])
+def caracteristicas_inactivas():
+    caracteristicas_inactivas = Caracteristicas.query.filter_by(activo=False).all()
+    return render_template('list_caracteristicas_inactivas.html', caracteristicas=caracteristicas_inactivas)
+
+@app.route("/restaurar_caracteristica/<int:id>", methods=['POST'])
+def restaurar_caracteristica(id):
+    caracteristica = Caracteristicas.query.get_or_404(id)
+    caracteristica.activo = True
+    db.session.commit()
+    return redirect(url_for('añadirCaracteristica'))
+
 @app.route("/eliminar_caracteristica/<int:id>", methods=['POST'])
 def eliminar_caracteristica(id):
     caracteristica = Caracteristicas.query.get_or_404(id)
@@ -448,6 +544,18 @@ def equipos():
         categorias=categorias,
         equipos=equipos,
     )
+
+@app.route("/list_equipos_inactivos", methods=['GET'])
+def equipos_inactivos():
+    equipos_inactivos = Equipo.query.filter_by(activo=False).all()
+    return render_template('list_equipos_inactivos.html', equipos=equipos_inactivos)
+
+@app.route("/restaurar_equipo/<int:id>", methods=['POST'])
+def restaurar_equipo(id):
+    equipo = Equipo.query.get_or_404(id)
+    equipo.activo = True
+    db.session.commit()
+    return redirect(url_for('equipos'))
 
 @app.route("/eliminar_equipo/<int:id>", methods=['POST'])
 def eliminar_equipo(id):
@@ -542,6 +650,18 @@ def pedidos():
         proveedores=proveedores,   
     )
 
+@app.route("/list_pedidos_inactivos", methods=['GET'])
+def pedidos_inactivos():
+    pedidos_inactivos = Pedido.query.filter_by(activo=False).all()
+    return render_template('list_pedidos_inactivos.html', pedidos=pedidos_inactivos)
+
+@app.route("/restaurar_pedido/<int:id>", methods=['POST'])
+def restaurar_pedido(id):
+    pedido = Pedido.query.get_or_404(id)
+    pedido.activo = True
+    db.session.commit()
+    return redirect(url_for('pedidos'))
+
 @app.route("/pedidos/proveedor/<int:proveedor_id>")
 def pedidos_by_proveedor(proveedor_id):
     pedidos = Pedido.query.filter_by(proveedor_id=proveedor_id).all()
@@ -614,6 +734,18 @@ def clientes():
         clientes=clientes,
     )
 
+@app.route("/list_clientes_inactivos", methods=['GET'])
+def clientes_inactivos():
+    clientes_inactivos = Cliente.query.filter_by(activo=False).all()
+    return render_template('list_clientes_inactivos.html', clientes=clientes_inactivos)
+
+@app.route("/restaurar_cliente/<int:id>", methods=['POST'])
+def restaurar_cliente(id):
+    cliente = Cliente.query.get_or_404(id)
+    cliente.activo = True
+    db.session.commit()
+    return redirect(url_for('clientes'))
+
 @app.route("/clientes/fecha_registro/<string:fecha>")
 def clientes_by_fecha(fecha):
     clientes = Cliente.query.filter_by(fechaRegistro=fecha).all()
@@ -672,6 +804,18 @@ def empleados():
         empleados=empleados,
         sucursales=sucursales,
     )
+
+@app.route("/list_empleados_inactivos", methods=['GET'])
+def empleados_inactivos():
+    empleados_inactivos = Empleado.query.filter_by(activo=False).all()
+    return render_template('list_empleados_inactivos.html', empleados=empleados_inactivos)
+
+@app.route("/restaurar_empleado/<int:id>", methods=['POST'])
+def restaurar_empleado(id):
+    empleado = Empleado.query.get_or_404(id)
+    empleado.activo = True
+    db.session.commit()
+    return redirect(url_for('empleados'))
 
 @app.route("/empleados/puesto/<string:puesto>")
 def empleados_by_puesto(puesto):
@@ -740,6 +884,18 @@ def sucursales():
         'list_sucursales.html', 
         sucursales=sucursales,
     )
+
+@app.route("/list_sucursales_inactivas", methods=['GET'])
+def sucursales_inactivas():
+    sucursales_inactivas = Sucursal.query.filter_by(activo=False).all()
+    return render_template('list_sucursales_inactivas.html', sucursales=sucursales_inactivas)
+
+@app.route("/restaurar_sucursal/<int:id>", methods=['POST'])
+def restaurar_sucursal(id):
+    sucursal = Sucursal.query.get_or_404(id)
+    sucursal.activo = True
+    db.session.commit()
+    return redirect(url_for('sucursales'))
 
 @app.route("/sucursal/<id>/editar", methods=['GET', 'POST'])
 def sucursal_editar(id):
@@ -889,5 +1045,17 @@ def venta_editar(id):
 def eliminar_venta(id):
     venta = Venta.query.get_or_404(id)
     venta.activo = False
+    db.session.commit()
+    return redirect(url_for('ventas'))
+
+@app.route("/list_ventas_inactivas", methods=['GET'])
+def ventas_inactivas():
+    ventas_inactivas = Venta.query.filter_by(activo=False).all()
+    return render_template('list_ventas_inactivas.html', ventas=ventas_inactivas)
+
+@app.route("/restaurar_venta/<int:id>", methods=['POST'])
+def restaurar_venta(id):
+    venta = Venta.query.get_or_404(id)
+    venta.activo = True
     db.session.commit()
     return redirect(url_for('ventas'))
