@@ -3,38 +3,41 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-3">
-        </div>
+        <div class="col-3"></div>
         <div class="col-6">
             {% include 'nav_equipos.html' %}
         </div>
-        <div class="col-3">
-        </div>
+        <div class="col-3"></div>
     </div>
     <div class="row">
         <div class="col-3"></div>
         <div class="col-6">
             <h4>Ingrese un Nuevo Equipo</h4>
+            <form action="" method="post">
                 <label class="text-left" for="modelo">Modelo</label>
                 <select name="modelo" id="" class="form-control mb-2" required>
                     {% for modelo in modelos %}
                         <option value="{{modelo.id}}">{{modelo.modelo}}</option>
                     {% endfor %}
                 </select>
+
                 <label for="marca">Marca</label>
                 <select name="marca" id="" class="form-control mb-2" required>
                     {% for marca in marcas %}
                         <option value="{{marca.id}}">{{marca.nombre}}</option>
                     {% endfor %}
                 </select>
+
                 <label for="categoria">Categoria</label>
                 <select name="categoria" id="" class="form-control mb-2" required>
                     {% for categoria in categorias %}
                         <option value="{{categoria.id}}">{{categoria.nombre}}</option>
                     {% endfor %}
                 </select>
+
                 <label for="precio">Precio</label>
                 <input type="number" name="precio" class="form-control mb-2" placeholder="Precio" required>
+
                 <label for="caracteristicas">Caracteristicas</label>
                 <select name="caracteristicas" id="" class="form-control mb-2" required>
                     {% for caracteristica in caracteristicas %}
@@ -43,22 +46,22 @@
                         </option>
                     {% endfor %}
                 </select>
+
                 <label for="proveedor">Proveedor</label>
                 <select name="proveedor" id="" class="form-control mb-2" required>
                     {% for proveedor in proveedores %}
                         <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
                     {% endfor %}
                 </select>
+
                 <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
         <div class="col-3"></div>
     </div>
     <div class="row mt-5">
-        <div class="col-12">
-            <div class="col-12 text-center">
-                <h4>Listado de Equipos</h4>
-            </div>
+        <div class="col-12 text-center">
+            <h4>Listado de Equipos</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -85,7 +88,7 @@
                         <td><a href="{{ url_for('equipos_by_proveedor', id=equipo.proveedor.id) }}">{{ equipo.proveedor.nombre }}</a></td>
                         <td><a href="{{ url_for('equipo_editar', id=equipo.id) }}" class="btn btn-success">Editar</a></td>
                         <td>
-                            <form action="{{ url_for('eliminar_equipo', id=equipo.id) }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este equipo?');">
+                            <form action="{{ url_for('eliminar_equipo', id=equipo.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres borrar este equipo?');">
                                 <button type="submit" class="btn btn-danger">Borrar</button>
                             </form>
                         </td>                    
