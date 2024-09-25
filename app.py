@@ -37,6 +37,7 @@ load_dotenv()
 @app.route("/users", methods=['POST', 'GET'])
 @jwt_required()
 def user():
+    print(get_jwt_identity())
     if request.method == 'POST':
         data = request.get_json()
         username = data.get('nombre_usuario')
@@ -74,7 +75,10 @@ def login():
 
         access_token = create_access_token(
             identity = username,
-            expires_delta = timedelta(minutes=3) 
+            expires_delta = timedelta(minutes=3),
+            additional_claims = dict( 
+                administrador = usuario.is_admin
+            )
         )
 
         return jsonify({"Mensaje": f"Token: {access_token}"})
