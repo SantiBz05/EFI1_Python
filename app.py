@@ -1,16 +1,86 @@
-from flask import Flask, render_template, redirect, request, url_for
+import bcrypt
+import os
+from datetime import timedelta
+
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_jwt_extended import (
+    JWTManager,
+    get_jwt,
+    get_jwt_identity,
+    create_access_token,
+    jwt_required,
+)
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
+
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/tienda_celulares'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get ('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+jwt = JWTManager(app)
 
-from models import Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo, Pedido, Cliente, Empleado, Sucursal, Venta
+from models import Usuario, Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo, Pedido, Cliente, Empleado, Sucursal, Venta
+from services.fabricante_service import FabricanteService
+from repositories.fabricante_repository import FabricanteRepository
 
+load_dotenv()
+
+@app.route("/users", methods=['POST', 'GET'])
+@jwt_required()
+def user():
+    if request.method == 'POST':
+        data = request.get_json()
+        username = data.get('nombre_usuario')
+        password = data.get('contraseña')
+        
+        password_hasheada = generate_password_hash(
+            password=password,
+            method='pbkdf2',
+            salt_length=8,
+        )
+        print(password_hasheada)
+
+        try:
+            nuevo_usuario = Usuario(
+                username=username,
+                password_hash=password_hasheada,
+            )
+            db.session.add(nuevo_usuario)
+            db.session.commit()
+
+            return jsonify({"Usuario Creado" : username}), 201
+        except:
+            return jsonify({"Error" : "Bien ahi crack, segundo error de tu vida, el primero? Nacer."})
+    return jsonify({"Usuario Creado" : "ACA IRIA EL LISTADO"})
+
+@app.route("/login", methods=['POST'])
+def login():
+    data = request.authorization 
+    username = data.username
+    password = data.password
+
+    usuario = Usuario.query.filter_by(username=username).first()
+
+    if usuario and check_password_hash(pwhash=usuario.password_hash, password=password):
+
+        access_token = create_access_token(
+            identity = username,
+            expires_delta = timedelta(minutes=3) 
+        )
+
+        return jsonify({"Mensaje": f"Token: {access_token}"})
+    
+    return jsonify({"Mensaje": "NO MATCH"})
+    
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -134,18 +204,15 @@ def categoria_editar(id):
 
 @app.route("/list_fabricantes", methods=['POST', 'GET'])
 def fabricantes():
-    fabricantes = Fabricante.query.filter_by(activo=True).all()
+    
+    services = FabricanteService(FabricanteRepository)
+    fabricantes = services.get_all()
 
     if request.method == 'POST':
         nombre = request.form['nombre']
         origen = request.form['origen']
         
-        nuevoFabricante = Fabricante(
-            nombre=nombre,
-            origen=origen
-        )
-        db.session.add(nuevoFabricante)
-        db.session.commit()
+        services.create(nombre=nombre, origen=origen)
         return redirect(url_for('fabricantes'))
 
     return render_template('list_fabricantes.html', fabricantes=fabricantes)
