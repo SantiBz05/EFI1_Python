@@ -1,16 +1,20 @@
-"""Users
+"""add models
 
-Revision ID: 36805c7504c3
+Revision ID: 0c6c0d7e15f3
 Revises: 
-Create Date: 2024-09-03 20:14:56.219753
+Create Date: 2024-11-03 04:25:14.723089
 
 """
+from werkzeug.security import generate_password_hash
+from models import Usuario
+from app import db
+
 from alembic import op
 import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '36805c7504c3'
+revision = '0c6c0d7e15f3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -91,7 +95,8 @@ def upgrade():
     op.create_table('usuario',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=50), nullable=False),
-    sa.Column('password', sa.String(length=50), nullable=False),
+    sa.Column('password_hash', sa.String(length=300), nullable=False),
+    sa.Column('is_admin', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('empleado',
@@ -149,6 +154,17 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
+
+    existing_user = Usuario.query.filter_by(username='admin').first()
+
+    if not existing_user:
+        admin_user = Usuario(
+            username= 'admin',
+            password_hash=generate_password_hash('admin'),
+            is_admin=True,
+        )
+        db.session.add(admin_user)
+        db.session.commit()
 
 
 def downgrade():

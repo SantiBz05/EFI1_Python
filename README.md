@@ -11,16 +11,3 @@
 - ``` pip install -r requirements.txt```
 ##### Correr el proyecto
 - ```flask run --reload```
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# EFI1_Python
-# flaskwtf
