@@ -16,17 +16,21 @@ from werkzeug.security import (
     generate_password_hash,
     check_password_hash
 )
-
+from flask_marshmallow import Marshmallow
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get ('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+ 
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
+ma = Marshmallow(app)
 
 from models import Usuario, Marca, Categoria, Proveedor, Inventario, Accesorios, Caracteristicas, Fabricante, Modelo, Equipo, Pedido, Cliente, Empleado, Sucursal, Venta
 from services.fabricante_service import FabricanteService
@@ -34,57 +38,8 @@ from repositories.fabricante_repository import FabricanteRepository
 
 load_dotenv()
 
-@app.route("/users", methods=['POST', 'GET'])
-@jwt_required()
-def user():
-    print(get_jwt_identity())
-    if request.method == 'POST':
-        data = request.get_json()
-        username = data.get('nombre_usuario')
-        password = data.get('contraseña')
-        
-        password_hasheada = generate_password_hash(
-            password=password,
-            method='pbkdf2',
-            salt_length=8,
-        )
-        print(password_hasheada)
-
-        try:
-            nuevo_usuario = Usuario(
-                username=username,
-                password_hash=password_hasheada,
-            )
-            db.session.add(nuevo_usuario)
-            db.session.commit()
-
-            return jsonify({"Usuario Creado" : username}), 201
-        except:
-            return jsonify({"Error" : "Bien ahi crack, segundo error de tu vida, el primero? Nacer."})
-    return jsonify({"Usuario Creado" : "ACA IRIA EL LISTADO"})
-
-@app.route("/login", methods=['POST'])
-def login():
-    data = request.authorization 
-    username = data.username
-    password = data.password
-
-    usuario = Usuario.query.filter_by(username=username).first()
-
-    if usuario and check_password_hash(pwhash=usuario.password_hash, password=password):
-
-        access_token = create_access_token(
-            identity = username,
-            expires_delta = timedelta(minutes=3),
-            additional_claims = dict( 
-                administrador = usuario.is_admin
-            )
-        )
-
-        return jsonify({"Mensaje": f"Token: {access_token}"})
-    
-    return jsonify({"Mensaje": "NO MATCH"})
-    
+from views import register_bp
+register_bp(app)
 @app.route("/")
 def index():
     return render_template('index.html')
