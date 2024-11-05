@@ -51,15 +51,27 @@ class EquipoSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Equipo
     
+    id = ma.auto_field()
     precio = ma.auto_field()
+    activo = ma.auto_field()
+    
+    modelo_id = ma.auto_field()
+    marca_id = ma.auto_field()
+    categoria_id = ma.auto_field()
+    caracteristicas_id = ma.auto_field()
+    proveedor_id = ma.auto_field()
 
     @validates('precio')
     def validate_precio(self, value):
         if value <= 0:
             raise ValidationError("El precio no puede ser menor o igual a cero.")
 
-    #modelo = ma.Nested(ModeloSchema)
-    #marca = ma.Nested(MarcaSchema)
-    #categoria = ma.Nested(CategoriaSchema)
-    #caracteristicas = ma.Nested(CaracteristicasSchema)
-    #proveedor = ma.Nested(ProveedorSchema)
+class MinimalEquipoSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Equipo
+
+    id = ma.auto_field()
+    modelo_id = ma.auto_field()
+    marca_id = ma.auto_field()
+    precio = ma.auto_field()
+    activo = ma.auto_field()
