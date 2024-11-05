@@ -11,11 +11,10 @@ Esta API permite gestionar equipos en el sistema. Se pueden realizar operaciones
 #### Ejemplo de Solicitud
 
 ```bash
-curl -X GET http://tu-api.com/login \
--    {
-        "username":"admin",
-        "password":"admin",
-    },
+{
+        "username" : "admin",
+        "password" : "admin",
+}
 ```
 #### Respuesta Exitosa
 ```
@@ -32,8 +31,10 @@ curl -X GET http://tu-api.com/login \
 #### Ejemplo de Solicitud
 
 ```bash
-curl -X GET http://tu-api.com/equipos \
--H "Authorization: Bearer TU_TOKEN"
+{
+        "username": "admin",
+        "password": "admin",
+}
 ```
 #### Respuesta Exitosa
 ```
@@ -47,7 +48,7 @@ curl -X GET http://tu-api.com/equipos \
         "categoria_id": 4,
         "proveedor_id": 5,
         "activo": true
-    },
+    }
     ...
 ]
 ```
@@ -57,10 +58,7 @@ curl -X GET http://tu-api.com/equipos \
 - **Descripción**: Crea un nuevo equipo en el sistema. Solo los administradores pueden crear nuevos equipos.
 #### Ejemplo de Solicitud
 ```bash
-curl -X POST http://tu-api.com/equipos \
--H "Authorization: Bearer TU_TOKEN" \
--H "Content-Type: application/json" \
--d '{
+{
     "precio": 1500.00,
     "modelo_id": 2,
     "marca_id": 1,
@@ -68,7 +66,7 @@ curl -X POST http://tu-api.com/equipos \
     "categoria_id": 4,
     "proveedor_id": 5,
     "activo": true
-}'
+}
 ```
 #### Respuesta Exitosa
 ```
@@ -90,10 +88,7 @@ curl -X POST http://tu-api.com/equipos \
 - **Descripción**: Actualiza la información de un equipo existente. Solo los administradores pueden realizar esta acción.
 #### Ejemplo de Solicitud
 ```bash
-curl -X PUT http://tu-api.com/equipos \
--H "Authorization: Bearer TU_TOKEN" \
--H "Content-Type: application/json" \
--d '{
+{
     "id": 1,
     "precio": 1600.00,
     "modelo_id": 3,
@@ -102,7 +97,7 @@ curl -X PUT http://tu-api.com/equipos \
     "categoria_id": 5,
     "proveedor_id": 6,
     "activo": true
-}'
+}
 ```
 #### Respuesta Exitosa
 ``` bash
@@ -124,13 +119,9 @@ curl -X PUT http://tu-api.com/equipos \
 - **Descripción**: Elimina un equipo del sistema. Solo los administradores pueden realizar esta acción.
 #### Ejemplo de Solicitud
 ``` bash
-Copiar código
-curl -X DELETE http://tu-api.com/equipos \
--H "Authorization: Bearer TU_TOKEN" \
--H "Content-Type: application/json" \
--d '{
+{
     "id": 1
-}'
+}
 ```
 #### Respuesta Exitosa
 ```
