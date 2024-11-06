@@ -12,8 +12,8 @@ Esta API permite gestionar equipos en el sistema. Se pueden realizar operaciones
 
 ```bash
 {
-        "username" : "admin",
-        "password" : "admin",
+        "usuario" : "admin",
+        "contrasenia" : "admin",
 }
 ```
 #### Respuesta Exitosa
