@@ -1,10 +1,8 @@
-from datetime import timedelta
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, get_jwt, jwt_required
-from werkzeug.security import check_password_hash, generate_password_hash
-from flask import Blueprint, request, jsonify, make_response
+from flask_jwt_extended import get_jwt, jwt_required
+from flask import Blueprint, request, jsonify
 from app import db
-from models import Marca, Categoria, Equipo, Caracteristicas, Proveedor, Modelo, Usuario
+from models import Marca, Categoria, Equipo, Caracteristicas, Proveedor, Modelo
 from schemas import (
     ModeloSchema,
     CategoriaSchema,
