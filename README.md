@@ -132,3 +132,23 @@ Esta API permite gestionar equipos en el sistema. Se pueden realizar operaciones
 #### Notas
 - **Asegúrate de incluir un token JWT válido en el encabezado de autorización para todas las solicitudes que requieran autenticación.** 
 - **Solo los usuarios con privilegios de administrador pueden crear, actualizar o eliminar equipos.**
+- 
+### 5. Ver registros de un modelo (GET)
+- **Descripción**: Este método te permitira ver los registros existentes en los siguientes modelos:
+- Marca
+- Categoria
+- Proveedor
+- Inventario
+- Accesorio
+- Caracteristica
+- Facbricante
+- Modelo
+- Pedido
+- Sucursal
+- mpleado
+- Cliente
+- Venta
+- **URL**: /ruta del modelo al que quieras acceder
+- **Método**: GET
+#### Ejemplo de Solicitud
+- Para acceder a los registros solo has de introducir el token que indica que has logeado sesion correctamente y luego ejecutar el metodo GET en la direccion url que desees.
