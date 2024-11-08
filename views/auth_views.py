@@ -40,6 +40,7 @@ def users():
     additional_data = get_jwt()
     administrador = additional_data.get("administrador")
 
+    # Crear un nuevo usuario
     if request.method == "POST":
         if administrador:
             data = request.get_json()
@@ -78,8 +79,58 @@ def users():
                 403,
             )
 
+    # Obtener todos los usuarios
     usuarios = Usuario.query.all()
     if administrador:
         return UsuarioSchema(many=True).dump(usuarios)
     else:
         return MinimalUserSchema(many=True).dump(usuarios)
+
+
+@auth_bp.route("/users/<int:user_id>", methods=["PUT", "DELETE"])
+@jwt_required()
+def modify_user(user_id):
+    additional_data = get_jwt()
+    administrador = additional_data.get("administrador")
+
+    # Verificar si el usuario tiene permisos de administrador
+    if not administrador:
+        return jsonify({"Mensaje": "Ud no está habilitado para modificar o eliminar un usuario."}), 403
+
+    usuario = Usuario.query.get(user_id)
+
+    if not usuario:
+        return jsonify({"Mensaje": "Usuario no encontrado"}), 404
+
+    # Actualizar información del usuario (método PUT)
+    if request.method == "PUT":
+        data = request.get_json()
+        username = data.get("usuario")
+        password = data.get("contrasenia")
+        is_admin = data.get("is_admin", usuario.is_admin)
+
+        # Si se proporciona un nuevo nombre de usuario, actualízalo
+        if username:
+            usuario.username = username
+
+        # Si se proporciona una nueva contraseña, actualízala
+        if password:
+            usuario.password_hash = generate_password_hash(password, method="pbkdf2", salt_length=8)
+
+        # Actualizar el estado de administrador si se especifica
+        usuario.is_admin = is_admin
+
+        try:
+            db.session.commit()
+            return jsonify({"Mensaje": "Usuario actualizado exitosamente"}), 200
+        except Exception as e:
+            return jsonify({"Mensaje": "Error al actualizar el usuario", "Error": str(e)}), 500
+
+    # Eliminar usuario (método DELETE)
+    elif request.method == "DELETE":
+        try:
+            db.session.delete(usuario)
+            db.session.commit()
+            return jsonify({"Mensaje": "Usuario eliminado exitosamente"}), 200
+        except Exception as e:
+            return jsonify({"Mensaje": "Error al eliminar el usuario", "Error": str(e)}), 500
